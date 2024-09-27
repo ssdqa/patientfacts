@@ -12,8 +12,8 @@
 #'                       - @site
 #' @param study_name - A custom string label with the name of your study
 #' @param patient_level_tbl - logical indicating whether an additional table with patient level results should be output;
-#'                            if TRUE, an R dataframe called `pf_patient_level_results` will appear in the global environment
-#'                            in addition to the standard summary output
+#'                            if TRUE, the output of this function will be a list containing both the summary and patient level
+#'                            output. Otherwise, this function will just output the summary dataframe
 #' @param visit_types - A list of visit types by which the output should be stratified. Options for visit types can be found or adjusted
 #'                      in the provided `pf_visit_types.csv` file. If you would not like to stratify your results by visit type, please
 #'                      set the visit_types argument equal to `all`
@@ -213,6 +213,14 @@ pf_process_pcornet <- function(cohort = cohort,
   cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
                        output_function in pf_output: ', output_type, '.')))
 
-  return(pf_final %>% replace_site_col_pcnt())
+  # Output results
+  if(patient_level_tbl){
+
+    output <- list('pf_summary_results' = pf_final %>% replace_site_col(),
+                   'pf_patient_level_results' = pf_int %>% replace_site_col())
+
+    return(output)
+
+  }else{return(pf_final %>% replace_site_col())}
 
 }

@@ -119,6 +119,8 @@ pf_ss_exp_at <- function(data_tbl,
 
   cli::cli_div(theme = list(span.code = list(color = 'blue')))
 
+  facet <- facet %>% append('visit_type') %>% unique()
+
   if(output=='median_fact_ct'){
     y_title='Median Fact Count'
   }else if(output=='sum_fact_ct'){
@@ -338,6 +340,8 @@ pf_ss_anom_nt <- function(data_tbl,
 
   cli::cli_div(theme = list(span.code = list(color = 'blue')))
 
+  facet <- facet %>% append('visit_type') %>% unique()
+
   if(output=='outlier_fact'){
     y_title = 'Number of Overall Patients +/- 2 SD Away from Mean'
     x_lab = 'Number of Anomalous Patients'
@@ -398,9 +402,11 @@ pf_ss_anom_nt <- function(data_tbl,
 #'
 pf_ss_exp_nt <- function(data_tbl,
                          output,
-                         facet=c('domain')) {
+                         facet) {
 
   cli::cli_div(theme = list(span.code = list(color = 'blue')))
+
+  facet <- facet %>% append('visit_type') %>% unique()
 
   if(output=='median_site_with0s'){
     y_title='Median Facts / Follow-Up for All Patients'
@@ -526,9 +532,11 @@ pf_ms_exp_nt <- function(data_tbl,
       comp_var = 'median_all_without0s'
   }else(stop('Please select a valid output: {.code median_site_with0s} or {.code median_site_without0s}'))
 
+  facet <- facet %>% append('visit_type') %>% unique()
+
   data_format <- data_tbl %>%
     mutate(n_w_fact = format(n_w_fact, big.mark = ',', scientific = FALSE),
-           site_lab = paste0(site, ' (N = ', n_w_fact, ')'))
+           site_lab = paste0(site, ' \n(No. of Patients = ', n_w_fact, ')'))
 
   r <- ggplot(data_format,
               aes(x=domain,y=!! sym(output), colour=site))+

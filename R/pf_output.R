@@ -27,11 +27,13 @@
 pf_output <- function(process_output,
                       output_function,
                       output,
-                      facet = NULL,
+                      #facet = NULL,
                       time_span = c('2012-01-01', '2023-01-01'),
                       date_breaks_str = '1 year',
                       domain_filter = 'conditions_all',
                       visit_filter = 'outpatient'){
+
+  if('age_grp' %in% colnames(process_output)){facet <- 'age_grp'}else{facet <- NULL}
 
   ## Run output functions
   if(output_function == 'pf_ms_anom_nt'){
