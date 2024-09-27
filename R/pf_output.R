@@ -21,6 +21,8 @@
 #'
 #' @return "raw" output that can be called within the R environment to generate the graph in the Viewer window
 #'
+#' @export
+#'
 
 pf_output <- function(process_output,
                       output_function,
