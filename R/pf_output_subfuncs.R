@@ -419,7 +419,7 @@ pf_ss_exp_nt <- function(data_tbl,
 
   plt <- ggplot(data_tbl,
          aes(x=domain, y=!! sym(output), fill=domain)) +
-    geom_bar(stat='identity') +
+    geom_bar(stat='identity', show.legend = FALSE) +
     facet_wrap((facet)) +
     labs(y=y_title,
          x='Domain') +
