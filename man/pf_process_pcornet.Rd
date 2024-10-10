@@ -16,8 +16,8 @@ pf_process_pcornet(
   p_value = 0.9,
   age_groups = NULL,
   anomaly_or_exploratory = "anomaly",
-  domain_tbl = read_codeset("pf_domains_pcnt", "cccc"),
-  visit_type_table = read_codeset("pf_visit_types_pcnt", "cc")
+  domain_tbl = patientfacts::pf_domain_file,
+  visit_type_table = patientfacts::pf_visit_file_pcornet
 )
 }
 \arguments{

@@ -17,7 +17,7 @@ pf_process_omop(
   age_groups = NULL,
   anomaly_or_exploratory = "anomaly",
   domain_tbl = patientfacts::pf_domain_file,
-  visit_type_table = read_codeset("pf_visit_types", "ic")
+  visit_type_table = patientfacts::pf_visit_file_omop
 )
 }
 \arguments{

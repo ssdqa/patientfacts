@@ -6,7 +6,7 @@
 \usage{
 pf_process(
   cohort = cohort,
-  study_name = "glom",
+  study_name,
   patient_level_tbl = FALSE,
   visit_types = c("outpatient", "inpatient"),
   omop_or_pcornet = "omop",
@@ -18,7 +18,7 @@ pf_process(
   age_groups = NULL,
   anomaly_or_exploratory = "anomaly",
   domain_tbl = patientfacts::pf_domain_file,
-  visit_type_table = read_codeset("pf_visit_types", "ic")
+  visit_type_table = patientfacts::pf_visit_file_omop
 )
 }
 \arguments{
@@ -42,8 +42,8 @@ set the visit_types argument equal to \code{all}}
 
 \item{omop_or_pcornet}{Option to run the function using the OMOP or PCORnet CDM as the default CDM
 \itemize{
-\item \code{omop}: run the function against an OMOP CDM instance
-\item \code{pcornet}: run the function against a PCORnet CDM instance
+\item \code{omop}: run the \code{\link[=pf_process_omop]{pf_process_omop()}} function against an OMOP CDM instance
+\item \code{pcornet}: run the \code{\link[=pf_process_pcornet]{pf_process_pcornet()}} function against a PCORnet CDM instance
 }}
 
 \item{multi_or_single_site}{Option to run the function on a single vs multiple sites

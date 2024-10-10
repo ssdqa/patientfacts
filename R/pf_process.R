@@ -21,8 +21,8 @@
 #'                    in the provided `pf_visit_file_(omop/pcornet)` file. If you would not like to stratify your results by visit type, please
 #'                    set the visit_types argument equal to `all`
 #' @param omop_or_pcornet Option to run the function using the OMOP or PCORnet CDM as the default CDM
-#' - `omop`: run the function against an OMOP CDM instance
-#' - `pcornet`: run the function against a PCORnet CDM instance
+#' - `omop`: run the [pf_process_omop()] function against an OMOP CDM instance
+#' - `pcornet`: run the [pf_process_pcornet()] function against a PCORnet CDM instance
 #' @param multi_or_single_site Option to run the function on a single vs multiple sites
 #' - `single`: run the function for a single site
 #' - `multi`: run the function for multiple sites
@@ -70,7 +70,7 @@
 #'
 
 pf_process<- function(cohort = cohort,
-                      study_name = 'glom',
+                      study_name,
                       patient_level_tbl = FALSE,
                       visit_types = c('outpatient','inpatient'),
                       omop_or_pcornet = 'omop',
@@ -80,12 +80,19 @@ pf_process<- function(cohort = cohort,
                       time_period = 'year',
                       p_value = 0.9,
                       age_groups = NULL,
-                      #codeset = NULL,
                       anomaly_or_exploratory='anomaly',
                       domain_tbl=patientfacts::pf_domain_file,
-                      visit_type_table=read_codeset('pf_visit_types','ic')){
+                      visit_type_table=patientfacts::pf_visit_file_omop){
 
+  ## Check proper arguments
   cli::cli_div(theme = list(span.code = list(color = 'blue')))
+
+  if(!multi_or_single_site %in% c('single', 'multi')){cli::cli_abort('Invalid argument for {.code multi_or_single_site}: please enter either {.code multi} or {.code single}')}
+  if(!anomaly_or_exploratory %in% c('anomaly', 'exploratory')){cli::cli_abort('Invalid argument for {.code anomaly_or_exploratory}: please enter either {.code anomaly} or {.code exploratory}')}
+
+  ## parameter summary output
+  output_type <- suppressWarnings(param_summ(check_string = 'pf',
+                                             as.list(environment())))
 
   if(tolower(omop_or_pcornet) == 'omop'){
 
@@ -122,4 +129,9 @@ pf_process<- function(cohort = cohort,
                                   visit_type_table=visit_type_table)
 
   }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
+
+  cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
+                       output_function in pf_output: ', output_type, '.')))
+
+  return(pf_rslt)
 }

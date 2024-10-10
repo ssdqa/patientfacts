@@ -70,15 +70,11 @@ pf_process_pcornet <- function(cohort = cohort,
                                age_groups = NULL,
                                #codeset = NULL,
                                anomaly_or_exploratory='anomaly',
-                               domain_tbl=read_codeset('pf_domains_pcnt','cccc'),
-                               visit_type_table=read_codeset('pf_visit_types_pcnt','cc')){
+                               domain_tbl=patientfacts::pf_domain_file,
+                               visit_type_table=patientfacts::pf_visit_file_pcornet){
 
   ## Step 0: Set cohort name for table output
-  config('cohort', study_name)
-
-  ## parameter summary output
-  output_type <- suppressWarnings(param_summ(check_string = 'pf',
-                                             as.list(environment())))
+  # config('cohort', study_name)
 
   ## Step 1: Check Sites
   site_filter <- check_site_type_pcnt(cohort = cohort,
@@ -206,9 +202,6 @@ pf_process_pcornet <- function(cohort = cohort,
     }else{pf_final <- pf_int}
 
   }
-
-  cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
-                       output_function in pf_output: ', output_type, '.')))
 
   # Output results
   if(patient_level_tbl){
