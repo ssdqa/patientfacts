@@ -10,8 +10,9 @@ pf_ss_exp_at(data_tbl, output, facet, date_breaks_str = "1 year")
 \item{data_tbl}{output from \code{pf_process} function}
 
 \item{output}{desired output - have 2 options:
-\enumerate{
-\item \code{median_fact_ct}: the median number of facts for each domain during the specified time period
+\itemize{
+\item \code{median_fact_ct}: the median number of facts for each domain during the
+specified time period
 \item \code{sum_fact_ct}: the sum of facts for each domain during the specified time period
 }}
 
@@ -21,13 +22,9 @@ pf_ss_exp_at(data_tbl, output, facet, date_breaks_str = "1 year")
 the chart}
 }
 \value{
-a dot and line chart displaying the output variable of interest per
+a dot and line chart displaying the \code{output} variable of interest per
 domain across the user specified time period
 }
 \description{
-This chart will produce output for each domain. The data frame
-that is listed as a parameter of the function should minimally contain a single
-output for each domain. User can facet by site, age category,
-or other stratifications. Multiple graphs can also be produced (e.g.,
-one graph faceting by site, or creating separate output for each site)
+\strong{Single Site, Exploratory, Over Time}
 }

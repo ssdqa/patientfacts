@@ -2,7 +2,7 @@
 % Please edit documentation in R/pf_output_subfuncs.R
 \name{pf_ms_exp_nt}
 \alias{pf_ms_exp_nt}
-\title{#' \strong{Multi-Site, Exploratory, No Time}}
+\title{\strong{Multi-Site, Exploratory, No Time}}
 \usage{
 pf_ms_exp_nt(data_tbl, output, facet)
 }
@@ -10,7 +10,7 @@ pf_ms_exp_nt(data_tbl, output, facet)
 \item{data_tbl}{output from \code{pf_process} function}
 
 \item{output}{desired output - have 2 options:
-\enumerate{
+\itemize{
 \item \code{median_site_with0s}: specific site median, including patients with no evidence of patient fact
 (e.g., if domain = labs, includes in the median all patients with and without any labs)
 \item \code{median_site_without0s}: specific site median, not including patients without evidence of patient fact
@@ -21,11 +21,8 @@ pf_ms_exp_nt(data_tbl, output, facet)
 }
 \value{
 a dot plot displaying the median facts per follow up for each domain
-compared to the all-site median (star icon)
+and site compared to the all-site median (star icon)
 }
 \description{
-This chart will produce output for each site & domain. The data frame
-that is listed as a parameter of the function should minimally contain a single
-output for each domain and site combination. User can facet by visit type, age category,
-or other stratifications. Multiple graphs can also be produced with varying facets.
+\strong{Multi-Site, Exploratory, No Time}
 }

@@ -4,18 +4,15 @@
 \alias{pf_ms_exp_at}
 \title{\strong{Multi-Site, Exploratory, Across Time}}
 \usage{
-pf_ms_exp_at(data_tbl, time_span, output, facet = NULL)
+pf_ms_exp_at(data_tbl, output, facet = NULL)
 }
 \arguments{
 \item{data_tbl}{output from \code{pf_process} function}
 
-\item{time_span}{the desired time span to be examined in the output; can be the same as the
-previous function or can be changed to a subset of the time_span from the
-previous function}
-
 \item{output}{desired output - have 2 options:
-\enumerate{
-\item \code{median_fact_ct}: the median number of facts for each domain during the specified time period
+\itemize{
+\item \code{median_fact_ct}: the median number of facts for each domain during the
+specified time period
 \item \code{sum_fact_ct}: the sum of facts for each domain during the specified time period
 }}
 
@@ -23,12 +20,8 @@ previous function}
 }
 \value{
 line graph representing the output variable of interest across time
-for each of the sites of interest; each site is a line in the user
-specified facets
+for each of the sites of interest; each site is represented by one line
 }
 \description{
-This chart will produce output for each site & domain. The data frame
-that is listed as a parameter of the function should minimally contain a single
-output for each site & domain combination. User can facet by visit type, age category,
-or other stratifications. Multiple graphs can also be produced with varying facets.
+\strong{Multi-Site, Exploratory, Across Time}
 }

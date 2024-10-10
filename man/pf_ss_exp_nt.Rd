@@ -4,15 +4,13 @@
 \alias{pf_ss_exp_nt}
 \title{\strong{Single-Site, Exploratory, No Time}}
 \usage{
-pf_ss_exp_nt(data_tbl, output, facet = c("domain"))
+pf_ss_exp_nt(data_tbl, output, facet)
 }
 \arguments{
-\item{data_tbl}{output from previous function;
-requires input for one site; can create multiple graphs
-for different grouped variables}
+\item{data_tbl}{output from \code{pf_process} function}
 
 \item{output}{desired output - have 2 options:
-\enumerate{
+\itemize{
 \item \code{median_site_with0s}: specific site median, including patients with no evidence of patient fact
 (e.g., if domain = labs, includes in the median all patients with and without any labs)
 \item \code{median_site_without0s}: specific site median, not including patients without evidence of patient fact
@@ -26,9 +24,5 @@ a bar graph displaying the median facts per follow-up for each domain
 and visit_type
 }
 \description{
-This chart will produce output for each domain. The data frame
-that is listed as a parameter of the function should minimally contain a single
-output for each domain. User can facet by site, age category,
-or other stratifications. Multiple graphs can also be produced (e.g.,
-one graph faceting by site, or creaeting separate output for each site)
+\strong{Single-Site, Exploratory, No Time}
 }

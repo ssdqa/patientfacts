@@ -16,7 +16,7 @@ to filter down the output}
 to filter down the output}
 }
 \value{
-three graphs:
+returns three graphs:
 \enumerate{
 \item line graph that shows the smoothed proportion of a
 domain across time computation with the Euclidean distance associated with each line
@@ -27,5 +27,5 @@ proportion as the fill
 }
 }
 \description{
-Proportion of patients with fact & Euclidean distance summary
+\strong{Multi-Site, Anomaly, Over Time}
 }

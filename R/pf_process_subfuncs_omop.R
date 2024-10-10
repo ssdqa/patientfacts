@@ -13,7 +13,11 @@
 #'         the visit type of interest summarizing the facts per year of follow up for each
 #'         patient in the cohort
 #'
-compute_pf_pcnt <- function(cohort,
+#' @importFrom rlang parse_expr
+#' @importFrom tidyr pivot_wider
+#' @importFrom purrr reduce
+#'
+compute_pf_omop <- function(cohort,
                             pf_input_tbl,
                             grouped_list,
                             domain_tbl) {
@@ -34,37 +38,12 @@ compute_pf_pcnt <- function(cohort,
         filter(!! rlang::parse_expr(domain_list[[i]]$filter_logic))
     } else {domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]]$domain_tbl))}
 
-    # if(!is.na(domain_list[[i]][[3]]) && !is.na(domain_list[[i]][[4]])) {
-    #
-    #   filter_var <- domain_list[[i]][[3]]
-    #   filter_vec <- strsplit(domain_list[[i]][[4]],split=',',fixed = TRUE)[[1]]
-    #   domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #     filter(!! sym(filter_var) %in% c(filter_vec))
-    #
-    # } else if(!is.na(domain_list[[i]][[3]]) && is.na(domain_list[[i]][[4]])){
-    #
-    #   filter_var <- domain_list[[i]][[3]]
-    #   samp <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>% select(!!sym(filter_var)) %>%
-    #     head(1) %>% collect()
-    #   var_class <- unlist(lapply(samp, class))
-    #
-    #   if(var_class == 'character'){
-    #     domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #       filter(!!sym(filter_var) != 'NI', !!sym(filter_var) != 'OT',
-    #              !!sym(filter_var) != 'UN', !is.na(!!sym(filter_var)))
-    #   }else{
-    #     domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #       filter(! is.na(!!sym(filter_var)))
-    #   }
-    #
-    # }else{domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]]))}
-
     ## computes facts per patient by a named list of grouped variables
-    ## assumes patid is part of named list
+    ## assumes person_id is part of named list
     pf <-
       pf_input_tbl %>%
       inner_join(select(domain_tbl_use,
-                        encounterid)) %>%
+                        visit_occurrence_id)) %>%
       group_by(
         !!! syms(grouped_list)
       ) %>% summarise(total_strat_ct=n()) %>%
@@ -74,15 +53,15 @@ compute_pf_pcnt <- function(cohort,
                                 fu >= 0.1 & fu < 1 ~ 10,
                                 TRUE ~ 1),
              fact_ct_strat=ifelse(fu != 0,round(total_strat_ct/(fu * k_mult),2),0)) %>%
-      select(-total_strat_ct) %>%
-      select(patid,
+      #select(-c(total_strat_ct, k_mult)) %>%
+      select(person_id,
              domain,
              fact_ct_strat) %>%
       pivot_wider(names_from=domain,
                   values_from=fact_ct_strat) %>%
       right_join(cohort) %>%
-      relocate(patid) %>%
-      compute_new()
+      relocate(person_id) %>%
+      compute_new(indexes=list('person_id'))
 
     domain_results[[domain_name]] <- pf
   }
@@ -91,6 +70,7 @@ compute_pf_pcnt <- function(cohort,
     reduce(.x=domain_results,
            .f=left_join)
 }
+
 
 #'
 #' Compute facts per patient for each time_period within a user-defined
@@ -106,12 +86,9 @@ compute_pf_pcnt <- function(cohort,
 #'         the visit type of interest summarizing the facts for each time period within the time span
 #'         for each patient in the cohort
 #'
-compute_pf_for_fot_pcnt <- function(cohort,
-                                    pf_input_tbl,
+compute_pf_for_fot_omop <- function(cohort, pf_input_tbl,
                                     grouped_list,
                                     domain_tbl) {
-
-  on.exit(gc())
 
   domain_results <- list()
   domain_list <- split(domain_tbl, seq(nrow(domain_tbl)))
@@ -119,8 +96,8 @@ compute_pf_for_fot_pcnt <- function(cohort,
 
   for (i in 1:length(domain_list)) {
 
-    domain_name = domain_list[[i]][[1]]
-    message(paste0('Starting domain ', domain_list[[i]][1]))
+    domain_name = domain_list[[i]]$domain
+    message(paste0('Starting domain ', domain_list[[i]]$domain))
 
     ## checks to see if the table needs to be filtered in any way;
     ## allow for one filtering operation
@@ -129,52 +106,26 @@ compute_pf_for_fot_pcnt <- function(cohort,
         filter(!! rlang::parse_expr(domain_list[[i]]$filter_logic))
     } else {domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]]$domain_tbl))}
 
-
-    # if(!is.na(domain_list[[i]][[3]]) && !is.na(domain_list[[i]][[4]])) {
-    #
-    #   filter_var <- domain_list[[i]][[3]]
-    #   filter_vec <- strsplit(domain_list[[i]][[4]],split=',',fixed = TRUE)[[1]]
-    #   domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #     filter(!! sym(filter_var) %in% c(filter_vec))
-    #
-    # } else if(!is.na(domain_list[[i]][[3]]) && is.na(domain_list[[i]][[4]])){
-    #
-    #   filter_var <- domain_list[[i]][[3]]
-    #   samp <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>% select(!!sym(filter_var)) %>%
-    #     head(1) %>% collect()
-    #   var_class <- unlist(lapply(samp, class))
-    #
-    #   if(var_class == 'character'){
-    #     domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #       filter(!!sym(filter_var) != 'NI', !!sym(filter_var) != 'OT',
-    #              !!sym(filter_var) != 'UN', !is.na(!!sym(filter_var)))
-    #   }else{
-    #     domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]])) %>%
-    #       filter(! is.na(!!sym(filter_var)))
-    #   }
-    #
-    # }else{domain_tbl_use <- cdm_tbl(paste0(domain_list[[i]][[2]]))}
-
     ## computes facts per patient by a named list of grouped variables
     ## assumes person_id is part of named list
     pf <-
       pf_input_tbl %>%
       inner_join(select(domain_tbl_use,
-                        encounterid)) %>%
+                        visit_occurrence_id)) %>%
       group_by(
         !!! syms(grouped_list)
       ) %>% summarise(total_strat_ct=n()) %>%
       mutate(domain=domain_name) %>% ungroup()
 
-    new_group <- grouped_list[! grouped_list %in% c('patid')]
+    new_group <- grouped_list[! grouped_list %in% c('person_id')]
 
     pf_cohort_final <-
       pf %>% right_join(select(cohort,
-                               patid)) %>%
-      distinct(patid) %>% summarise(ct=n()) %>% pull()
+                               person_id)) %>%
+      distinct(person_id) %>% summarise(ct=n()) %>% pull()
 
     site_visit_ct_num <-
-      pf_input_tbl %>% summarise(ct=n_distinct(patid)) %>%
+      pf_input_tbl %>% summarise(ct=n_distinct(person_id)) %>%
       pull()
 
     if (!class(config("db_src")) %in% "PqConnection") {

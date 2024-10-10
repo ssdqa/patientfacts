@@ -4,16 +4,15 @@
 \alias{pf_ss_anom_nt}
 \title{\strong{Single Site, Anomaly Detection, No Time}}
 \usage{
-pf_ss_anom_nt(data_tbl, output, facet = c("domain"))
+pf_ss_anom_nt(data_tbl, output, facet = c("visit_type"))
 }
 \arguments{
-\item{data_tbl}{output from previous function;
-requires input for one site; can create multiple graphs
-for different grouped variables}
+\item{data_tbl}{output from \code{pf_process} function}
 
 \item{output}{desired output - have 4 options:
-\enumerate{
-\item \code{outlier_fact}: the number of facts overall (i.e. not grouped by site) that fall 2 SD away from the mean
+\itemize{
+\item \code{outlier_fact}: the number of facts overall (i.e. not grouped by site) that fall 2 SD
+away from the mean
 \item \code{prop_outlier_fact}: the proportion of facts overall that fall 2 SD away from the mean
 \item \code{outlier_site_fact}: the number of facts per site that fall 2 SD away from the mean
 \item \code{prop_outlier_site_fact}: the proportion of facts per site that fall 2 SD away from the mean
@@ -27,9 +26,5 @@ patients falling +/- 2 standard deviations away from the mean facts
 per follow-up for a given domain
 }
 \description{
-This chart will produce output for each domain. The data frame
-that is listed as a parameter of the function should minimally contain a single
-output for each domain. User can facet by site, age category,
-or other stratifications. Multiple graphs can also be produced (e.g.,
-one graph faceting by site, or creating separate output for each site)
+\strong{Single Site, Anomaly Detection, No Time}
 }

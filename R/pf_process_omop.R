@@ -1,12 +1,12 @@
 
-#' Clinical Facts per Patient -- PCORnet
+#' Clinical Facts per Patient -- OMOP
 #'
 #' This is a completeness check that will compute the number of facts per years of follow-up for each patient in
 #' a cohort. The user will provide the domains (`domain_tbl`) and visit types (`visit_type_tbl`) of interest.
 #' Sample versions of these inputs are included as data in the package and are accessible with `patientfacts::`.
 #' Results can optionally be stratified by site, age group, visit type, and/or time.
 #'
-#' This version of the function is compatible with the PCORnet CDM.
+#' This version of the function is compatible with the OMOP CDM.
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
 #' - person_id
@@ -58,20 +58,20 @@
 #'
 #'
 
-pf_process_pcornet <- function(cohort = cohort,
-                               study_name = 'glom',
-                               patient_level_tbl = FALSE,
-                               visit_types = c('outpatient','inpatient'),
-                               multi_or_single_site = 'multi',
-                               time = FALSE,
-                               time_span = c('2014-01-01', '2023-01-01'),
-                               time_period = 'year',
-                               p_value = 0.9,
-                               age_groups = NULL,
-                               #codeset = NULL,
-                               anomaly_or_exploratory='anomaly',
-                               domain_tbl=read_codeset('pf_domains_pcnt','cccc'),
-                               visit_type_table=read_codeset('pf_visit_types_pcnt','cc')){
+pf_process_omop <- function(cohort = cohort,
+                            study_name = 'glom',
+                            patient_level_tbl = FALSE,
+                            visit_types = c('outpatient','inpatient'),
+                            multi_or_single_site = 'multi',
+                            time = FALSE,
+                            time_span = c('2014-01-01', '2023-01-01'),
+                            time_period = 'year',
+                            p_value = 0.9,
+                            age_groups = NULL,
+                            #codeset = NULL,
+                            anomaly_or_exploratory='anomaly',
+                            domain_tbl=patientfacts::pf_domain_file,
+                            visit_type_table=read_codeset('pf_visit_types','ic')){
 
   ## Step 0: Set cohort name for table output
   config('cohort', study_name)
@@ -81,8 +81,8 @@ pf_process_pcornet <- function(cohort = cohort,
                                              as.list(environment())))
 
   ## Step 1: Check Sites
-  site_filter <- check_site_type_pcnt(cohort = cohort,
-                                      multi_or_single_site = multi_or_single_site)
+  site_filter <- check_site_type(cohort = cohort,
+                                 multi_or_single_site = multi_or_single_site)
   cohort_filter <- site_filter$cohort
   grouped_list <- site_filter$grouped_list
   site_col <- site_filter$grouped_list
@@ -90,13 +90,12 @@ pf_process_pcornet <- function(cohort = cohort,
 
   ## Step 2: Prep cohort
 
-  cohort_prep <- prepare_cohort_pcnt(cohort_tbl = cohort_filter,
-                                     age_groups = age_groups, codeset = codeset)
+  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups)
 
   ## Step 3: Run Function
 
-  if(!time){grouped_list <- grouped_list %>% append(c('patid','start_date','end_date','fu'))}else{
-    grouped_list <- grouped_list %>% append(c('patid','time_start','time_increment','fu'))}
+  if(!time){grouped_list <- grouped_list %>% append(c('person_id','start_date','end_date','fu'))}else{
+    grouped_list <- grouped_list %>% append(c('person_id','time_start','time_increment','fu'))}
 
   if(is.data.frame(age_groups)){grouped_list <- grouped_list %>% append('age_grp')}
   #if(is.data.frame(codeset)){grouped_list <- grouped_list %>% append('flag')}
@@ -106,37 +105,37 @@ pf_process_pcornet <- function(cohort = cohort,
     grouped_list <- grouped_list[! grouped_list %in% 'fu']
 
     pf_int <- compute_fot(cohort = cohort_prep,
-                          site_col = site_col,
-                          reduce_id = 'visit_type',
-                          time_period = time_period,
-                          time_span = time_span,
-                          site_list = site_list_adj,
-                          check_func = function(dat){
-                            loop_through_visits_pcnt(cohort_tbl = dat,
-                                                    check_func = function(cht, t){
-                                                      compute_pf_for_fot_pcnt(cohort = cht,
-                                                                              pf_input_tbl = t,
-                                                                              grouped_list = grouped_list,
-                                                                              domain_tbl = domain_tbl)},
-                                                    site_col = site_col,
-                                                    #time = TRUE,
-                                                    visit_type_tbl=visit_type_table,
-                                                    site_list=site_list_adj,
-                                                    visit_list=visit_types,
-                                                    grouped_list=grouped_list,
-                                                    domain_tbl=domain_tbl)
-                          })
+                            site_col = site_col,
+                            reduce_id = 'visit_type',
+                            time_period = time_period,
+                            time_span = time_span,
+                            site_list = site_list_adj,
+                            check_func = function(dat){
+                              loop_through_visits(cohort_tbl = dat,
+                                                  check_func = function(cht, t){
+                                                    compute_pf_for_fot_omop(cohort = cht,
+                                                                            pf_input_tbl = t,
+                                                                            grouped_list = grouped_list,
+                                                                            domain_tbl = domain_tbl)},
+                                                  site_col = site_col,
+                                                  time = TRUE,
+                                                  visit_type_tbl=visit_type_table,
+                                                  site_list=site_list_adj,
+                                                  visit_list=visit_types,
+                                                  grouped_list=grouped_list,
+                                                  domain_tbl=domain_tbl)
+                            })
 
   } else {
-    pf_tbl <- loop_through_visits_pcnt(
+    pf_tbl <- loop_through_visits(
       cohort_tbl=cohort_prep,
       check_func = function(cht, t){
-        compute_pf_pcnt(cohort = cht,
+        compute_pf_omop(cohort = cht,
                         pf_input_tbl = t,
                         grouped_list = grouped_list,
                         domain_tbl = domain_tbl)},
       site_col = site_col,
-      #time = FALSE,
+      time = FALSE,
       site_list=site_list_adj,
       visit_list=visit_types,
       visit_type_tbl=visit_type_table,
@@ -144,18 +143,12 @@ pf_process_pcornet <- function(cohort = cohort,
       domain_tbl = domain_tbl
     )
 
-    ### NEED TO MAKE SURE THAT CREATING LONG TABLE IS A GOOD DECISION FOR REPRODUCIBILITY
     pf_int <- combine_study_facts(pf_tbl=pf_tbl,
                                   domain_list = domain_tbl,
                                   study_abbr = study_name,
                                   time = time,
-                                  visit_type_list = visit_types) %>% collect() %>%
-      replace_site_col_pcnt()
-  }
-
-  # Output intermediate results if requested
-  if(patient_level_tbl){assign('pf_patient_level_results', pf_int,
-                               envir = parent.env(rlang::current_env()))}
+                                  visit_type_list = visit_types) %>% collect()
+    }
 
   ## Step 4: Summarise (Medians, SD)
   if(!time) {
@@ -174,7 +167,8 @@ pf_process_pcornet <- function(cohort = cohort,
 
       pf_anom_int <- compute_dist_anomalies(df_tbl = pf_int_summ %>% replace_site_col(),
                                             grp_vars = c('domain', 'visit_type'),
-                                            var_col = 'prop_pt_fact')
+                                            var_col = 'prop_pt_fact',
+                                            denom_cols = c('domain', 'visit_type', 'tot_pt'))
 
       pf_final <- detect_outliers(df_tbl = pf_anom_int,
                                   tail_input = 'both',
@@ -183,9 +177,9 @@ pf_process_pcornet <- function(cohort = cohort,
                                   column_variable = c('domain', 'visit_type'))
 
     } else {pf_final <- compute_pf_medians(data_input=pf_int,
-                                           site_col = site_col,
-                                           agegrp = age_groups
-                                           #codeset=codeset
+                                            site_col = site_col,
+                                            agegrp = age_groups
+                                            #codeset=codeset
                                            )}
 
   }else{
@@ -203,9 +197,9 @@ pf_process_pcornet <- function(cohort = cohort,
                                        grp_vars = c('domain', 'visit_type'),
                                        var_col = 'prop_pts_fact')
 
-    }else{pf_final <- pf_int}
+      }else{pf_final <- pf_int}
 
-  }
+    }
 
   cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
                        output_function in pf_output: ', output_type, '.')))

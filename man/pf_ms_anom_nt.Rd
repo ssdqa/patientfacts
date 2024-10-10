@@ -18,6 +18,11 @@ a dot plot where the shape of the dot represents whether the point is
 anomalous, the color of the dot represents the proportion of patients
 for a given domain, and the size of the dot represents the mean proportion
 across all sites
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{    if no groups were eligible for anomaly detection analysis, a heatmap summarizing
+    the proportion of patients for a given domain & site and a dot plot summarizing
+    the average standard deviation for each site are returned as an alternative
+}\if{html}{\out{</div>}}
 }
 \description{
 \strong{Multi-Site, Anomaly Detection, No Time}
