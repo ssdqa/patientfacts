@@ -198,13 +198,13 @@ compute_dist_mean_pf <- function(data_input,
            mean_tot=mean(var_val),
            sd_tot=sd(var_val),
            zscore_tot = ((var_val - mean_tot) / sd_tot),
-           abs_z = abs(zscore_fact),
+           abs_z = abs(zscore_tot),
            outlier = case_when(abs_z > n_sd ~ 1L,
                                TRUE ~ 0L),
            outlier_tot = sum(outlier),
            prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
     ungroup() %>%
-    select(-c(outlier, abs_z, mean_fact, sd_fact)) %>% distinct()
+    select(-c(outlier, abs_z, zscore_tot)) %>% distinct()
 
 
   site_dist_means_fact <-
@@ -218,14 +218,14 @@ compute_dist_mean_pf <- function(data_input,
     summarise(n_w_fact=n(),
               mean_fact=mean(var_val),
               sd_fact=sd(var_val),
-              zscore_site_fact = ((var_val - mean_fact) / sd_fact),
-              abs_z = abs(zscore_site_fact),
+              zscore_fact = ((var_val - mean_fact) / sd_fact),
+              abs_z = abs(zscore_fact),
               outlier = case_when(abs_z > n_sd ~ 1L,
                                   TRUE ~ 0L),
               outlier_fact = sum(outlier),
               prop_outlier_fact = round(outlier_fact / n_fact, 3)) %>%
     ungroup() %>%
-    select(-c(outlier, abs_z, zscore_site_fact)) %>% distinct() %>%
+    select(-c(outlier, abs_z, zscore_fact)) %>% distinct() %>%
     left_join(site_dist_means_tot)
 
   site_dist_means_final <-
