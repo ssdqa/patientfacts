@@ -229,7 +229,7 @@ compute_dist_mean_pf <- function(data_input,
     left_join(site_dist_means_tot)
 
   site_dist_means_final <-
-    site_dist_means_final %>% replace(is.na(.), 0)
+    site_dist_means_fact %>% replace(is.na(.), 0)
 
   site_dist_means_final
 }
