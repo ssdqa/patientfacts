@@ -74,7 +74,7 @@ compute_pf_pcnt <- function(cohort,
                                 fu >= 0.1 & fu < 1 ~ 10,
                                 TRUE ~ 1),
              fact_ct_strat=ifelse(fu != 0,round(total_strat_ct/(fu * k_mult),2),0)) %>%
-      select(-total_strat_ct) %>%
+      #select(-total_strat_ct) %>%
       select(patid,
              domain,
              fact_ct_strat) %>%

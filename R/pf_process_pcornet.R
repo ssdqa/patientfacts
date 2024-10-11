@@ -86,8 +86,7 @@ pf_process_pcornet <- function(cohort = cohort,
 
   ## Step 2: Prep cohort
 
-  cohort_prep <- prepare_cohort_pcnt(cohort_tbl = cohort_filter,
-                                     age_groups = age_groups, codeset = codeset)
+  cohort_prep <- prepare_cohort_pcnt(cohort_tbl = cohort_filter, age_groups = age_groups)
 
   ## Step 3: Run Function
 
@@ -140,18 +139,12 @@ pf_process_pcornet <- function(cohort = cohort,
       domain_tbl = domain_tbl
     )
 
-    ### NEED TO MAKE SURE THAT CREATING LONG TABLE IS A GOOD DECISION FOR REPRODUCIBILITY
     pf_int <- combine_study_facts(pf_tbl=pf_tbl,
                                   domain_list = domain_tbl,
                                   study_abbr = study_name,
                                   time = time,
-                                  visit_type_list = visit_types) %>% collect() %>%
-      replace_site_col_pcnt()
+                                  visit_type_list = visit_types) %>% collect()
   }
-
-  # Output intermediate results if requested
-  if(patient_level_tbl){assign('pf_patient_level_results', pf_int,
-                               envir = parent.env(rlang::current_env()))}
 
   ## Step 4: Summarise (Medians, SD)
   if(!time) {
