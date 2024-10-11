@@ -182,10 +182,10 @@ compute_pf_for_fot_pcnt <- function(cohort,
         pf %>% group_by(
           !!! syms(new_group)
         ) %>% group_by(domain, .add = TRUE) %>%
-        mutate(fact_ct_denom=n(),
+        mutate(pts_w_fact=n(),
                sum_fact_ct=sum(total_strat_ct),
                median_fact_ct=median(total_strat_ct)) %>%
-        select(group_cols(), fact_ct_denom, sum_fact_ct, median_fact_ct) %>%
+        select(group_cols(), pts_w_fact, sum_fact_ct, median_fact_ct) %>%
         distinct() %>%
         ungroup()
     }else{
@@ -193,7 +193,7 @@ compute_pf_for_fot_pcnt <- function(cohort,
         pf %>% group_by(
           !!! syms(new_group)
         ) %>% group_by(domain, .add = TRUE) %>%
-        summarise(fact_ct_denom=n(),
+        summarise(pts_w_fact=n(),
                   sum_fact_ct=sum(total_strat_ct),
                   median_fact_ct=median(total_strat_ct)) %>%
         ungroup()
@@ -203,7 +203,7 @@ compute_pf_for_fot_pcnt <- function(cohort,
     finalized <-
       pf_final %>%
       mutate(pt_ct_denom=pf_cohort_final,
-             site_visit_ct=site_visit_ct_num) %>% collect()
+             pts_w_visit=site_visit_ct_num) %>% collect()
 
 
     domain_results[[domain_name]] <- finalized

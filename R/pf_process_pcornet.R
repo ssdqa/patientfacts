@@ -188,13 +188,13 @@ pf_process_pcornet <- function(cohort = cohort,
 
     if(anomaly_or_exploratory == 'anomaly' && multi_or_single_site == 'multi'){
 
-      pf_final <- ms_anom_euclidean(fot_input_tbl = pf_int %>% mutate(prop_pts_fact = fact_ct_denom / site_visit_ct),
+      pf_final <- ms_anom_euclidean(fot_input_tbl = pf_int %>% mutate(prop_pts_fact = pts_w_fact / pts_w_visit),
                                     grp_vars = c('site', 'visit_type', 'domain'),
                                     var_col = 'prop_pts_fact')
 
     }else if(anomaly_or_exploratory == 'anomaly' && multi_or_single_site == 'single'){
 
-      pf_final <- anomalize_ss_anom_at(fot_input_tbl = pf_int %>% mutate(prop_pts_fact = fact_ct_denom / site_visit_ct),
+      pf_final <- anomalize_ss_anom_at(fot_input_tbl = pf_int %>% mutate(prop_pts_fact = pts_w_fact / pts_w_visit),
                                        time_var = 'time_start',
                                        grp_vars = c('domain', 'visit_type'),
                                        var_col = 'prop_pts_fact')
