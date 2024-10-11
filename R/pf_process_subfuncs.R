@@ -194,17 +194,17 @@ compute_dist_mean_pf <- function(data_input,
              visit_type,
              domain,
              .add=TRUE) %>%
-    mutate(n_tot=n(),
-           mean_tot=mean(var_val),
-           sd_tot=sd(var_val),
-           zscore_tot = ((var_val - mean_tot) / sd_tot),
-           abs_z = abs(zscore_tot),
-           outlier = case_when(abs_z > n_sd ~ 1L,
-                               TRUE ~ 0L),
-           outlier_tot = sum(outlier),
-           prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
-    ungroup() %>%
-    select(-c(outlier, abs_z, zscore_tot)) %>% distinct()
+    summarise(n_tot=n(),
+              mean_tot=mean(var_val),
+              sd_tot=sd(var_val),
+              zscore_tot = ((var_val - mean_tot) / sd_tot),
+              abs_z = abs(zscore_tot),
+              outlier = case_when(abs_z > n_sd ~ 1L,
+                                  TRUE ~ 0L),
+              outlier_tot = sum(outlier),
+              prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
+    select(group_vars(.), n_tot, outlier_tot, mean_tot, sd_tot, prop_outlier_tot) %>%
+    ungroup() %>% distinct()
 
 
   site_dist_means_fact <-
