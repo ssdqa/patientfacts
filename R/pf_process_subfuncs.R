@@ -223,7 +223,7 @@ compute_dist_mean_pf <- function(data_input,
               outlier = case_when(abs_z > n_sd ~ 1L,
                                   TRUE ~ 0L),
               outlier_fact = sum(outlier),
-              prop_outlier_fact = round(outlier_fact / n_fact, 3)) %>%
+              prop_outlier_fact = round(outlier_fact / n_w_fact, 3)) %>%
     ungroup() %>%
     select(-c(outlier, abs_z, zscore_fact)) %>% distinct() %>%
     left_join(site_dist_means_tot)
