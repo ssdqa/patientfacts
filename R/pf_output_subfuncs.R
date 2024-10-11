@@ -40,12 +40,12 @@ pf_ss_anom_at <- function(data_tbl,
     filter(domain == domain_filter,
            visit_type == visit_filter) %>%
     unite(facet_col, !!!syms(facet), sep = '\n') %>%
-    mutate(prop = fact_ct_denom / pt_ct_denom)
+    mutate(prop = prop_pts_fact)
 
   if(time_inc == 'year'){
 
-    pp_qi <- qic(data = op_w_facet, x = time_start, y = fact_ct_denom, chart = 'pp', facets = ~facet_col,
-                n = site_visit_ct, title = 'Control Chart: Proportion Patients with Fact', ylab = 'Proportion',
+    pp_qi <- qic(data = op_w_facet, x = time_start, y = pts_w_fact, chart = 'pp', facets = ~facet_col,
+                n = pts_w_visit, title = 'Control Chart: Proportion Patients with Fact', ylab = 'Proportion',
                 xlab = 'Time', show.grid = TRUE)
 
     op_dat <- pp_qi$data
