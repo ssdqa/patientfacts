@@ -317,19 +317,19 @@ pf_ss_anom_nt <- function(data_tbl,
   facet <- facet %>% append('visit_type') %>% unique()
 
   if(output=='outlier_fact'){
-    y_title = 'Number of Overall Patients +/- 2 SD Away from Mean'
-    x_lab = 'Number of Anomalous Patients'
+    y_title = 'Number of Patients with Fact +/- 2 SD Away from Mean'
+    x_lab = 'Number of Anomalous Patients with Fact'
   }else if(output=='prop_outlier_fact'){
-    y_title = 'Proportion of Overall Patients +/- 2 SD Away from Mean'
-    x_lab = 'Proportion of Anomalous Patients'
-  }else if(output=='outlier_site_fact'){
-    y_title = 'Number of Site Patients +/- 2 SD Away from Mean'
-    x_lab = 'Number of Anomalous Patients'
-  }else if(output=='prop_outlier_site_fact'){
-      y_title = 'Proportion of Site Patients +/- 2 SD Away from Mean'
-      x_lab = 'Proportion of Anomalous Patients'
-  }else(cli::cli_abort('Please select a valid output: {.code outlier_fact}, {.code prop_outlier_fact}, {.code outlier_site_fact}, or
-             {.code prop_outlier_site_fact}'))
+    y_title = 'Proportion of Patients with Fact +/- 2 SD Away from Mean'
+    x_lab = 'Proportion of Anomalous Patients with Fact'
+  }else if(output=='outlier_tot'){
+    y_title = 'Number of Total Patients +/- 2 SD Away from Mean'
+    x_lab = 'Number of Anomalous Total Patients'
+  }else if(output=='prop_outlier_tot'){
+      y_title = 'Proportion of Total Patients +/- 2 SD Away from Mean'
+      x_lab = 'Proportion of Anomalous Total Patients'
+  }else(cli::cli_abort('Please select a valid output: {.code outlier_fact}, {.code prop_outlier_fact}, {.code outlier_tot}, or
+             {.code prop_outlier_tot}'))
 
   plt <- ggplot(data_tbl,
          aes(x = !!sym(output), y = domain, fill = domain)) +
