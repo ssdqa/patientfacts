@@ -158,7 +158,7 @@ pf_process_pcornet <- function(cohort = cohort,
     } else if(anomaly_or_exploratory == 'anomaly' && multi_or_single_site == 'multi'){
 
       pf_int_summ <- pf_int %>% group_by(site, visit_type, domain) %>%
-        summarise(tot_pt = n_distinct(person_id), n_pt_fact = sum(var_ever)) %>%
+        summarise(tot_pt = n_distinct(patid), n_pt_fact = sum(var_ever)) %>%
         mutate(prop_pt_fact = n_pt_fact / tot_pt)
 
       pf_anom_int <- compute_dist_anomalies(df_tbl = pf_int_summ %>% replace_site_col(),
