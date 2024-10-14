@@ -77,8 +77,8 @@ pf_process_pcornet <- function(cohort = cohort,
   # config('cohort', study_name)
 
   ## Step 1: Check Sites
-  site_filter <- check_site_type_pcnt(cohort = cohort,
-                                      multi_or_single_site = multi_or_single_site)
+  site_filter <- check_site_type(cohort = cohort,
+                                 multi_or_single_site = multi_or_single_site)
   cohort_filter <- site_filter$cohort
   grouped_list <- site_filter$grouped_list
   site_col <- site_filter$grouped_list

@@ -535,7 +535,7 @@ pf_ms_exp_nt <- function(data_tbl,
   }else if(output=='median_site_without0s'){
       y_title='Median Facts / Follow-Up for Patients with Fact Across Sites'
       comp_var = 'median_all_without0s'
-  }else(stop('Please select a valid output: {.code median_site_with0s} or {.code median_site_without0s}'))
+  }else(cli::cli_abort('Please select a valid output: {.code median_site_with0s} or {.code median_site_without0s}'))
 
   facet <- facet %>% append('visit_type') %>% unique()
 
