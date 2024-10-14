@@ -474,7 +474,7 @@ pf_ms_anom_nt <- function(data_tbl,
            fill = 'Proportion')
 
     # Test Site Score using SD Computation
-    test_site_score <- process_output %>%
+    test_site_score <- data_tbl %>%
       mutate(dist_mean = (!!sym(comparison_col) - mean_val)^2) %>%
       group_by(site) %>%
       summarise(n_grp = n(),
