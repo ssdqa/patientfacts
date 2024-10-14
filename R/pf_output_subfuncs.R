@@ -274,7 +274,7 @@ pf_ms_exp_at <- function(data_tbl,
     y_lab <- 'Sum Fact Count'
   }else(cli::cli_abort('Please select a valid output: {.code median_fact_ct} or {.code sum_fact_ct}'))
 
-  facet <- facet %>% append('domain') %>% unique()
+  facet <- facet %>% append('domain') %>% append('visit_type') %>% unique()
 
   p <- data_tbl %>%
     ggplot(aes(x = time_start, y = !!sym(output), fill = site, color = site)) +
