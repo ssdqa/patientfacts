@@ -8,7 +8,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 status](https://www.r-pkg.org/badges/version/expectedvariablespresent)](https://CRAN.R-project.org/package=patientfacts)
 <!-- badges: end -->
 
-The Patient Facts module summarizes the number of facts per patient during their cohort follow up period. 
+The completeness-focused checks in the Patient Facts module assess the availability of patient clinical data. The number of clinical events per year of follow-up for each patient in a cohort is computed and stratified by visit type.
 
 ## Installation
 
