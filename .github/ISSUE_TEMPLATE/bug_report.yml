@@ -13,15 +13,15 @@ body:
     attributes:
       label: Function
       description: Which function produced an error?
-      options: |
-        - pf_process
-        - pf_output
+      options: 
+        - label: pf_process
+        - label: pf_output
   - type: dropdown
     attributes:
       label: Function Configuration
       description: Which configuration produced the error?
       multiple: false
-      options: |
+      options: 
         - "Single Site, Exploratory, Cross-Sectional"
         - "Single Site, Anomaly Detection, Cross-Sectional"
         - "Single Site, Exploratory, Longitudinal"
@@ -35,7 +35,7 @@ body:
       label: Relational Database Backend
       description: What database backend do you use to access your data?
       multiple: false
-      options: |
+      options: 
         - "Postgres"
         - "SQL Server"
         - "Snowflake"
