@@ -1,5 +1,5 @@
 name: Bug Report
-about: Patient Facts Bug Report
+description: Patient Facts Bug Report
 title: "[Bug]: "
 labels: ["bug", "triage"]
 assignees:
