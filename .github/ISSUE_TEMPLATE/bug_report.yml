@@ -14,8 +14,8 @@ body:
       label: Function
       description: Which function produced an error?
       options:
-        - pf_process
-        - pf_output
+        - "pf_process"
+        - "pf_output"
   - type: dropdown
     attributes:
       label: Function Configuration
@@ -36,10 +36,10 @@ body:
       description: What database backend do you use to access your data?
       multiple: false
       options:
-        - Postgres
-        - SQL Server
-        - Snowflake
-        - Other
+        - "Postgres"
+        - "SQL Server"
+        - "Snowflake"
+        - "Other"
   - type: textarea
     attributes:
       label: Error Message
