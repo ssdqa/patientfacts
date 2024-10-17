@@ -13,7 +13,6 @@ body:
     attributes:
       label: Function
       description: Which function produced an error?
-      multiple: true
       options:
         - pf_process
         - pf_output
