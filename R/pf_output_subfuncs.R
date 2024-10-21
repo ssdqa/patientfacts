@@ -52,7 +52,7 @@ pf_ss_anom_at <- function(data_tbl,
 
     new_c <- ggplot(op_dat,aes(x,y)) +
       geom_ribbon(aes(ymin = lcl,ymax = ucl), fill = "lightgray",alpha = 0.4) +
-      geom_line(colour = ssdqa_colors_standard[[12]], size = .5) +
+      geom_line(colour = ssdqa_colors_standard[[12]], linewidth = .5) +
       geom_line(aes(x,cl)) +
       geom_point(colour = ssdqa_colors_standard[[6]] , fill = ssdqa_colors_standard[[6]], size = 1) +
       geom_point(data = subset(op_dat, y >= ucl), color = ssdqa_colors_standard[[3]], size = 2) +
@@ -131,7 +131,7 @@ pf_ss_exp_at <- function(data_tbl,
 
   p <- ggplot(data_tbl, aes(x=time_start, y=!! sym(output), group=domain, fill=domain)) +
     geom_point(aes(color=domain)) +
-    geom_smooth(method='loess',formula=y~x, size=0.5) +
+    geom_smooth(method='loess',formula=y~x, linewidth=0.5) +
     facet_wrap((facet), scales = 'free_y') +
     scale_fill_ssdqa() +
     scale_color_ssdqa() +
@@ -340,8 +340,8 @@ pf_ss_anom_nt <- function(data_tbl,
          y = 'Domain',
          x = x_lab) +
     theme_minimal() +
-    theme(panel.grid.major = element_line(size=0.4, linetype = 'solid'),
-          panel.grid.minor = element_line(size=0.2, linetype = 'dashed'))
+    theme(panel.grid.major = element_line(linewidth=0.4, linetype = 'solid'),
+          panel.grid.minor = element_line(linewidth=0.2, linetype = 'dashed'))
 
   plt[["metadata"]] <- tibble('pkg_backend' = 'plotly',
                               'tooltip' = FALSE)
@@ -388,8 +388,8 @@ pf_ss_exp_nt <- function(data_tbl,
     scale_fill_ssdqa() +
     coord_flip() +
     theme_minimal() +
-    theme(panel.grid.major = element_line(size=0.4, linetype = 'solid'),
-          panel.grid.minor = element_line(size=0.2, linetype = 'dashed'))
+    theme(panel.grid.major = element_line(linewidth=0.4, linetype = 'solid'),
+          panel.grid.minor = element_line(linewidth=0.2, linetype = 'dashed'))
 
   plt[["metadata"]] <- tibble('pkg_backend' = 'plotly',
                               'tooltip' = FALSE)

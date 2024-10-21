@@ -82,6 +82,10 @@ test_that('multi site, anomaly, no time', {
                             output_function = 'pf_ms_anom_nt',
                             visit_filter = 'inpatient'))
 
+  expect_no_error(pf_output(process_output = tbl_test %>% dplyr::mutate(anomaly_yn = 'no outlier in group'),
+                            output_function = 'pf_ms_anom_nt',
+                            visit_filter = 'inpatient'))
+
 
 })
 
