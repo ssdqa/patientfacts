@@ -34,5 +34,8 @@ Imports:
     timetk (>= 2.9.0)
 Remotes: PEDSnet/argos, ssdqa/ssdqa.gen
 Suggests: 
+    DBI,
+    readr,
+    RSQLite,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
