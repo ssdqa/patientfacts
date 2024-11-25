@@ -3,16 +3,18 @@ Title: Patient Facts
 Version: 0.0.0.9000
 Authors@R: 
     c(person("Kaleigh", "Wieand", email = "wieandk@chop.edu", role = c("aut", "cre")),
-      person("Kim", "Dickinson", email = "dickinsokl@chop.edu", role = c("aut")),
+      person("Kimberley", "Dickinson", email = "dickinsokl@chop.edu", role = c("aut")),
       person("Hanieh", "Razzaghi", email = "razzaghih@chop.edu", role = c("aut")),
-      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut"), 
-              comment = c(ORCID = "0000-0002-8967-0662")))
-Description: This package represents one of several modules in the broader SSDQA ecosystem. The Patient Facts module summarizes the number of facts per patient during their cohort follow up period.
+      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut")))
+Description: The Patient Facts module, part of the larger SSDQA ecosystem, serves to assess the 
+    availability of patient clinical data (in either an OMOP or PCORnet CDM format) by summarizing the 
+    number of clinical events per year of follow-up for each patient in a cohort. These facts are 
+    computed and stratified by visit type.
 License: MPL-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
-URL: https://github.com/ssdqa/patientfacts
+URL: https://github.com/ssdqa/patientfacts, https://pedsnetapps.chop.edu/metadata/collections/69c64223-f9ce-4a80-bf1a-11f27a7fc794
 BugReports: https://github.com/ssdqa/patientfacts/issues
 Depends: 
     argos,
