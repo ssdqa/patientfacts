@@ -2,7 +2,7 @@
 % Please edit documentation in R/pf_output.R
 \name{pf_output}
 \alias{pf_output}
-\title{Clinical Facet per Patient -- Output Generation}
+\title{Clinical Facts per Patient -- Output Generation}
 \usage{
 pf_output(
   process_output,
@@ -26,18 +26,18 @@ to the console after \code{pf_process} has been executed
 
 \item{output}{the numerical variable in \code{process_output} that should be used to generate the graph}
 
-\item{date_breaks_str}{for \code{pf_ss_exp_at} only, a string that informs the program how the
+\item{date_breaks_str}{for \code{pf_ss_exp_la} only, a string that informs the program how the
 time period should be divided (i.e. '1 year', '3 months', etc). Defaults to 1 year.}
 
-\item{domain_filter}{for \code{pf_ms_anom_at} only, the single domain to which the graph should be filtered for displaying
+\item{domain_filter}{for \code{pf_ms_anom_la} only, the single domain to which the graph should be filtered for displaying
 Euclidean distance values}
 
-\item{visit_filter}{for \code{pf_ms_anom_at} only, the single visit type to which the graph should be filtered for displaying
+\item{visit_filter}{for \code{pf_ms_anom_la} only, the single visit type to which the graph should be filtered for displaying
 Euclidean distance values}
 }
 \value{
 a graph summarizing the data output by \code{pf_process}; see individual output functions for specific details
 }
 \description{
-Clinical Facet per Patient -- Output Generation
+Clinical Facts per Patient -- Output Generation
 }

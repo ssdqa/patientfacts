@@ -4,9 +4,8 @@
 #' This is a completeness check that will compute the number of facts per years of follow-up for each patient in
 #' a cohort. The user will provide the domains (`domain_tbl`) and visit types (`visit_type_tbl`) of interest.
 #' Sample versions of these inputs are included as data in the package and are accessible with `patientfacts::`.
-#' Results can optionally be stratified by site, age group, visit type, and/or time.
-#'
-#' This version of the function is compatible with both the OMOP and the PCORnet CDMs based on the user's selection.
+#' Results can optionally be stratified by site, age group, visit type, and/or time. This function is compatible with
+#' both the OMOP and the PCORnet CDMs based on the user's selection.
 #'
 #' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
 #' - person_id
@@ -26,7 +25,7 @@
 #' @param multi_or_single_site Option to run the function on a single vs multiple sites
 #' - `single`: run the function for a single site
 #' - `multi`: run the function for multiple sites
-#' @param time a logical that tells the function whether you would like to look at the output over time
+#' @param time a logical that tells the function whether you would like to look at the output cross-sectionally (FALSE) or longitudinally (TRUE)
 #' @param time_span when `time = TRUE`, this argument defines the start and end dates for the time period of interest. should be
 #'                  formatted as `c(start date, end date)` in `yyyy-mm-dd` date format.
 #' @param time_period when `time = TRUE`, this argument defines the distance between dates within the specified time period. defaults
@@ -57,7 +56,7 @@
 #'                                           within the file if multiple visit_concept_ids/enc_types represent the visit type
 #'
 #' @return a dataframe with summary results (i.e. medians) that can be used as the input for `pf_output` to generate graphical output
-#' @return if `patient_level_tbl` is TRUE, an additional dataframe is returned in a list format with patient level output
+#' @return if `patient_level_tbl = TRUE`, an additional dataframe is returned in a list format with patient level output
 #'
 #' @import argos
 #' @import ssdqa.gen
@@ -70,17 +69,17 @@
 #'
 
 pf_process<- function(cohort = cohort,
-                      study_name,
+                      study_name = 'my_study',
                       patient_level_tbl = FALSE,
                       visit_types = c('outpatient','inpatient'),
                       omop_or_pcornet = 'omop',
-                      multi_or_single_site = 'multi',
+                      multi_or_single_site = 'single',
                       time = FALSE,
                       time_span = c('2014-01-01', '2023-01-01'),
                       time_period = 'year',
                       p_value = 0.9,
                       age_groups = NULL,
-                      anomaly_or_exploratory='anomaly',
+                      anomaly_or_exploratory='exploratory',
                       domain_tbl=patientfacts::pf_domain_file,
                       visit_type_table=patientfacts::pf_visit_file_omop){
 

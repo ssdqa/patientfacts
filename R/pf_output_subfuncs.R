@@ -13,7 +13,7 @@
 NULL
 
 
-#' **Single Site, Anomaly, Over Time**
+#' **Single Site, Anomaly, Longitudinal**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param facet variables to facet (e.g., `domain`); vector of strings
@@ -27,7 +27,7 @@ NULL
 #'         conducted and outliers are marked with red dots. the graphs representing
 #'         the data removed in the regression are also returned
 #'
-pf_ss_anom_at <- function(data_tbl,
+pf_ss_anom_la <- function(data_tbl,
                           facet,
                           visit_filter,
                           domain_filter){
@@ -98,7 +98,7 @@ pf_ss_anom_at <- function(data_tbl,
 
 }
 
-#' **Single Site, Exploratory, Over Time**
+#' **Single Site, Exploratory, Longitudinal**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param output desired output - have 2 options:
@@ -113,7 +113,7 @@ pf_ss_anom_at <- function(data_tbl,
 #'         domain across the user specified time period
 #'
 
-pf_ss_exp_at <- function(data_tbl,
+pf_ss_exp_la <- function(data_tbl,
                          output,
                          facet,
                          date_breaks_str = '1 year'){
@@ -148,7 +148,7 @@ pf_ss_exp_at <- function(data_tbl,
 
 }
 
-#' **Multi-Site, Anomaly, Over Time**
+#' **Multi-Site, Anomaly, Longitudinal**
 #'
 #' @param process_output output of `pf_process` function
 #' @param domain_filter one of the user provided domains in the process_output table to be used
@@ -164,7 +164,7 @@ pf_ss_exp_at <- function(data_tbl,
 #'    3) a bar graph with the Euclidean distance value for each site, with the average
 #'    proportion as the fill
 #'
-pf_ms_anom_at <- function(process_output,
+pf_ms_anom_la <- function(process_output,
                           domain_filter,
                           visit_filter) {
 
@@ -248,7 +248,7 @@ pf_ms_anom_at <- function(process_output,
 
 }
 
-#' **Multi-Site, Exploratory, Across Time**
+#' **Multi-Site, Exploratory, Longitudinal**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param output desired output - have 2 options:
@@ -260,7 +260,7 @@ pf_ms_anom_at <- function(process_output,
 #' @return line graph representing the output variable of interest across time
 #'         for each of the sites of interest; each site is represented by one line
 #'
-pf_ms_exp_at <- function(data_tbl,
+pf_ms_exp_la <- function(data_tbl,
                          output,
                          facet = NULL){
 
@@ -293,7 +293,7 @@ pf_ms_exp_at <- function(data_tbl,
   return(p)
 }
 
-#' **Single Site, Anomaly Detection, No Time**
+#' **Single Site, Anomaly Detection, Cross-Sectional**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param output desired output - have 4 options:
@@ -308,7 +308,7 @@ pf_ms_exp_at <- function(data_tbl,
 #'         patients falling +/- 2 standard deviations away from the mean facts
 #'         per follow-up for a given domain
 #'
-pf_ss_anom_nt <- function(data_tbl,
+pf_ss_anom_cs <- function(data_tbl,
                           output,
                           facet=c('visit_type')){
 
@@ -351,7 +351,7 @@ pf_ss_anom_nt <- function(data_tbl,
 }
 
 
-#' **Single-Site, Exploratory, No Time**
+#' **Single-Site, Exploratory, Cross-Sectional**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param output desired output - have 2 options:
@@ -365,7 +365,7 @@ pf_ss_anom_nt <- function(data_tbl,
 #' @return a bar graph displaying the median facts per follow-up for each domain
 #'         and visit_type
 #'
-pf_ss_exp_nt <- function(data_tbl,
+pf_ss_exp_cs <- function(data_tbl,
                          output,
                          facet) {
 
@@ -400,7 +400,7 @@ pf_ss_exp_nt <- function(data_tbl,
 
 
 
-#' **Multi-Site, Anomaly Detection, No Time**
+#' **Multi-Site, Anomaly Detection, Cross-Sectional**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param facet variables to facet (e.g., `domain`); vector of strings
@@ -415,7 +415,7 @@ pf_ss_exp_nt <- function(data_tbl,
 #'         the proportion of patients for a given domain & site and a dot plot summarizing
 #'         the average standard deviation for each site are returned as an alternative
 #'
-pf_ms_anom_nt <- function(data_tbl,
+pf_ms_anom_cs <- function(data_tbl,
                           facet = NULL,
                           visit_filter = 'inpatient'){
 
@@ -509,21 +509,21 @@ pf_ms_anom_nt <- function(data_tbl,
 
 }
 
-#' **Multi-Site, Exploratory, No Time**
+#' **Multi-Site, Exploratory, Cross-Sectional**
 #'
 #' @param data_tbl output from `pf_process` function
 #' @param output desired output - have 2 options:
 #' - `median_site_with0s`: specific site median, including patients with no evidence of patient fact
-#'                                       (e.g., if domain = labs, includes in the median all patients with and without any labs)
+#' (e.g., if domain = labs, includes in the median all patients with and without any labs)
 #' - `median_site_without0s`: specific site median, not including patients without evidence of patient fact
-#'                                          (e.g., if domain = labs, only includes median for patients with evidence of a lab)
+#' (e.g., if domain = labs, only includes median for patients with evidence of a lab)
 #' @param facet variables to facet (e.g., `domain`); vector of strings
 #'
 #' @return a dot plot displaying the median facts per follow up for each domain
 #'         and site compared to the all-site median (star icon)
 #'
 
-pf_ms_exp_nt <- function(data_tbl,
+pf_ms_exp_cs <- function(data_tbl,
                          output,
                          facet){
 

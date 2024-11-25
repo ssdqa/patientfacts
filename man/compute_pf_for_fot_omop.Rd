@@ -2,7 +2,7 @@
 % Please edit documentation in R/pf_process_subfuncs_omop.R
 \name{compute_pf_for_fot_omop}
 \alias{compute_pf_for_fot_omop}
-\title{Compute facts per patient for each time_period within a user-defined
+\title{Compute facts per patient for each time period within a user-defined
 time span}
 \usage{
 compute_pf_for_fot_omop(cohort, pf_input_tbl, grouped_list, domain_tbl)
@@ -23,6 +23,6 @@ the visit type of interest summarizing the facts for each time period within the
 for each patient in the cohort
 }
 \description{
-Compute facts per patient for each time_period within a user-defined
+Compute facts per patient for each time period within a user-defined
 time span
 }

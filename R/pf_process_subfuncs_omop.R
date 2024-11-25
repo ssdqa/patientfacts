@@ -61,7 +61,7 @@ compute_pf_omop <- function(cohort,
                   values_from=fact_ct_strat) %>%
       right_join(cohort) %>%
       relocate(person_id) %>%
-      compute_new(indexes=list('person_id'))
+      compute_new()
 
     domain_results[[domain_name]] <- pf
   }
@@ -73,7 +73,7 @@ compute_pf_omop <- function(cohort,
 
 
 #'
-#' Compute facts per patient for each time_period within a user-defined
+#' Compute facts per patient for each time period within a user-defined
 #' time span
 #'
 #' @param cohort the cohort of patients of interest for the study

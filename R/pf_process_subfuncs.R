@@ -18,9 +18,8 @@
 combine_study_facts <- function(pf_tbl,
                                 study_abbr,
                                 domain_list,
-                                time = FALSE,
-                                visit_type_list = list('inpatient','outpatient',
-                                                       'other_visit','all')) {
+                                time,
+                                visit_type_list) {
   final_list <- list()
 
   pf_visits <-

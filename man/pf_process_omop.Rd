@@ -6,16 +6,16 @@
 \usage{
 pf_process_omop(
   cohort = cohort,
-  study_name = "glom",
+  study_name = "my_study",
   patient_level_tbl = FALSE,
   visit_types = c("outpatient", "inpatient"),
-  multi_or_single_site = "multi",
+  multi_or_single_site = "single",
   time = FALSE,
   time_span = c("2014-01-01", "2023-01-01"),
   time_period = "year",
   p_value = 0.9,
   age_groups = NULL,
-  anomaly_or_exploratory = "anomaly",
+  anomaly_or_exploratory = "exploratory",
   domain_tbl = patientfacts::pf_domain_file,
   visit_type_table = patientfacts::pf_visit_file_omop
 )
@@ -45,7 +45,7 @@ set the visit_types argument equal to \code{all}}
 \item \code{multi}: run the function for multiple sites
 }}
 
-\item{time}{a logical that tells the function whether you would like to look at the output over time}
+\item{time}{a logical that tells the function whether you would like to look at the output cross-sectionally (FALSE) or longitudinally (TRUE)}
 
 \item{time_span}{when \code{time = TRUE}, this argument defines the start and end dates for the time period of interest. should be
 formatted as \verb{c(start date, end date)} in \code{yyyy-mm-dd} date format.}
@@ -89,7 +89,7 @@ within the file if multiple visit_concept_ids/enc_types represent the visit type
 \value{
 a dataframe with summary results (i.e. medians) that can be used as the input for \code{pf_output} to generate graphical output
 
-if \code{patient_level_tbl} is TRUE, an additional dataframe is returned in a list format with patient level output
+if \code{patient_level_tbl = TRUE}, an additional dataframe is returned in a list format with patient level output
 }
 \description{
 This is a completeness check that will compute the number of facts per years of follow-up for each patient in
