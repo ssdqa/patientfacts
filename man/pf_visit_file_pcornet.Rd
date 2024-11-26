@@ -18,7 +18,7 @@ pf_visit_file_pcornet
 }
 \description{
 A sample version of the file structure expected for the \code{visit_type_tbl}
-parameter in the \code{pf_process_pcornet} function. The user should recreate
-this file and include their own domain definitions.
+parameter in the \code{pf_process} function where the selected CDM is PCORnet.
+The user should recreate this file and include their own domain definitions.
 }
 \keyword{datasets}

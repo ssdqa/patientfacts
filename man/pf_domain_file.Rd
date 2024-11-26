@@ -7,6 +7,7 @@
 \format{
 \subsection{pf_domain_file}{
 
+A dataframe with 3 columns:
 \describe{
 \item{domain}{An arbitrary string to label the domain of interest}
 \item{domain_tbl}{The name of the CDM table associated with the domain of interest}

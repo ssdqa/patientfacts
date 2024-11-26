@@ -18,7 +18,7 @@ pf_visit_file_omop
 }
 \description{
 A sample version of the file structure expected for the \code{visit_type_tbl}
-parameter in the \code{pf_process} function. The user should recreate
-this file and include their own domain definitions.
+parameter in the \code{pf_process} function where the selected CDM is OMOP.
+The user should recreate this file and include their own domain definitions.
 }
 \keyword{datasets}
