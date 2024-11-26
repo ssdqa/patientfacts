@@ -7,6 +7,7 @@
 \format{
 \subsection{pf_visit_file_omop}{
 
+A dataframe with 2 columns:
 \describe{
 \item{visit_concept_id}{The visit_concept_id as it appears in the visit_occurrence table}
 \item{visit_type}{A string to label the visit type of the visit_concept_id; this string is what should be referenced in the \code{visit_types} parameter}

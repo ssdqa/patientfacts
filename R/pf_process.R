@@ -129,8 +129,8 @@ pf_process<- function(cohort = cohort,
 
   }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
 
-  cli::cli_inform(str_wrap(paste0('Based on your chosen parameters, we recommend using the following
-                       output_function in pf_output: ', output_type, '.')))
+  cli::cli_inform(paste0(col_green('Based on your chosen parameters, we recommend using the following
+                       output function in pf_output: '), col_blue(style_bold(output_type,'.'))))
 
   return(pf_rslt)
 }

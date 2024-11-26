@@ -7,6 +7,7 @@
 \format{
 \subsection{pf_visit_file_pcornet}{
 
+A dataframe with 2 columns:
 \describe{
 \item{enc_type}{The enc_type as it appears in the encounter table}
 \item{visit_type}{A string to label the visit type of the enc_type; this string is what should be referenced in the \code{visit_types} parameter}

@@ -2,10 +2,14 @@ Package: patientfacts
 Title: Patient Facts
 Version: 0.0.0.9000
 Authors@R: 
-    c(person("Hanieh", "Razzaghi", email = "razzaghih@chop.edu", role = c("aut")),
-      person("Kaleigh", "Wieand", email = "wieandk@chop.edu", role = c("aut", "cre")),
-      person("Kimberley", "Dickinson", email = "dickinsokl@chop.edu", role = c("aut")),
-      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut")))
+    c(person("Hanieh", "Razzaghi", email = "razzaghih@chop.edu", role = c("aut"),
+             comment = c(ORCID = "0000-0001-5001-1590")),
+      person("Kaleigh", "Wieand", email = "wieandk@chop.edu", role = c("aut", "cre"),
+             comment = c(ORCID = "0009-0003-7477-2601")),
+      person("Kimberley", "Dickinson", email = "dickinsokl@chop.edu", role = c("aut"),
+             comment = c(ORCID = "0000-0001-9523-056X")),
+      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut")),
+             comment = c(ORCID = "0000-0002-8967-0662"))
 Description: The Patient Facts module, part of the larger SSDQA ecosystem, serves to assess the 
     availability of patient clinical data (in either an OMOP or PCORnet CDM format) by summarizing the 
     number of clinical events per year of follow-up for each patient in a cohort. These facts are 
