@@ -65,6 +65,8 @@
 #' @importFrom stringr str_wrap
 #' @importFrom rlang current_env
 #'
+#' @example inst/example-pf_process_output.R
+#'
 #' @export
 #'
 

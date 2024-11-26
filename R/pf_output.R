@@ -21,6 +21,8 @@
 #'
 #' @return a graph summarizing the data output by `pf_process`; see individual output functions for specific details
 #'
+#' @example inst/example-pf_process_output.R
+#'
 #' @export
 #'
 
