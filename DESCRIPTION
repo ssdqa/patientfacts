@@ -8,8 +8,8 @@ Authors@R:
              comment = c(ORCID = "0009-0003-7477-2601")),
       person("Kimberley", "Dickinson", email = "dickinsokl@chop.edu", role = c("aut"),
              comment = c(ORCID = "0000-0001-9523-056X")),
-      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut")),
-             comment = c(ORCID = "0000-0002-8967-0662"))
+      person("Charles", "Bailey", email = "baileyc@chop.edu", role = c("aut"),
+             comment = c(ORCID = "0000-0002-8967-0662")))
 Description: The Patient Facts module, part of the larger SSDQA ecosystem, serves to assess the 
     availability of patient clinical data (in either an OMOP or PCORnet CDM format) by summarizing the 
     number of clinical events per year of follow-up for each patient in a cohort. These facts are 
