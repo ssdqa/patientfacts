@@ -50,10 +50,10 @@ pf_ss_anom_la <- function(data_tbl,
 
     op_dat <- pp_qi$data
 
-    new_c <- ggplot(op_dat,aes(x,y)) +
-      geom_ribbon(aes(ymin = lcl,ymax = ucl), fill = "lightgray",alpha = 0.4) +
+    new_c <- ggplot(op_dat,aes(x, y)) +
+      geom_ribbon(aes(ymin = lcl, ymax = ucl), fill = "lightgray",alpha = 0.4) +
       geom_line(colour = ssdqa_colors_standard[[12]], linewidth = .5) +
-      geom_line(aes(x,cl)) +
+      geom_line(aes(x, cl)) +
       geom_point(colour = ssdqa_colors_standard[[6]] , fill = ssdqa_colors_standard[[6]], size = 1) +
       geom_point(data = subset(op_dat, y >= ucl), color = ssdqa_colors_standard[[3]], size = 2) +
       geom_point(data = subset(op_dat, y <= lcl), color = ssdqa_colors_standard[[3]], size = 2) +
@@ -178,9 +178,9 @@ pf_ms_anom_la <- function(process_output,
     rename(prop=mean_allsiteprop) %>%
     mutate(site='all site average') %>%
     mutate(text_smooth=paste0("Site: ", site,
-                              "\n","Proportion Patients with Fact: ",prop),
+                              "\n","Proportion Patients with Fact: ", .data$prop),
            text_raw=paste0("Site: ", site,
-                           "\n","Proportion Patients with Fact: ",prop))
+                           "\n","Proportion Patients with Fact: ", .data$prop))
 
   dat_to_plot <-
     filt_op %>%
@@ -188,12 +188,12 @@ pf_ms_anom_la <- function(process_output,
     mutate(text_smooth=paste0("Site: ", site,
                               "\n","Euclidean Distance from All-Site Mean: ",dist_eucl_mean),
            text_raw=paste0("Site: ", site,
-                           "\n","Site Proportion: ",prop,
-                           "\n","Site Smoothed Proportion: ",site_loess,
-                           "\n","Euclidean Distance from All-Site Mean: ",dist_eucl_mean))
+                           "\n","Site Proportion: ", .data$prop,
+                           "\n","Site Smoothed Proportion: ", site_loess,
+                           "\n","Euclidean Distance from All-Site Mean: ", dist_eucl_mean))
 
   p <- dat_to_plot %>%
-    ggplot(aes(y = prop, x = time_start, color = site, group = site, text = text_smooth)) +
+    ggplot(aes(y = .data$prop, x = time_start, color = site, group = site, text = .data$text_smooth)) +
     geom_line(data=allsites, linewidth=1.1) +
     geom_smooth(se=TRUE,alpha=0.1,linewidth=0.5, formula = y ~ x) +
     scale_color_ssdqa() +
@@ -203,8 +203,8 @@ pf_ms_anom_la <- function(process_output,
          title = paste0('Smoothed Proportion Patients with ', visit_filter, ' ', domain_filter, ' Across Time'))
 
   q <- dat_to_plot %>%
-    ggplot(aes(y = prop, x = time_start, color = site,
-               group=site, text=text_raw)) +
+    ggplot(aes(y = .data$prop, x = time_start, color = site,
+               group=site, text=.data$text_raw)) +
     geom_line(data=allsites,linewidth=1.1) +
     geom_line(linewidth=0.2) +
     scale_color_ssdqa() +
@@ -219,8 +219,8 @@ pf_ms_anom_la <- function(process_output,
     summarise(mean_site_loess = mean(site_loess)) %>%
     mutate(tooltip = paste0('Site: ', site,
                             '\nEuclidean Distance: ', dist_eucl_mean,
-                            '\nAverage Loess Proportion: ', mean_site_loess)) %>%
-    ggplot(aes(x = site, y = dist_eucl_mean, fill = mean_site_loess, tooltip = tooltip)) +
+                            '\nAverage Loess Proportion: ', .data$mean_site_loess)) %>%
+    ggplot(aes(x = site, y = dist_eucl_mean, fill = .data$mean_site_loess, tooltip = .data$tooltip)) +
     geom_col_interactive() +
     coord_radial(r.axis.inside = FALSE, rotate.angle = TRUE) +
     guides(theta = guide_axis_theta(angle = 0)) +
@@ -478,16 +478,16 @@ pf_ms_anom_cs <- function(data_tbl,
       mutate(dist_mean = (!!sym(comparison_col) - mean_val)^2) %>%
       group_by(site) %>%
       summarise(n_grp = n(),
-                dist_mean_sum = sum(dist_mean),
-                overall_sd = sqrt(dist_mean_sum / n_grp)) %>%
+                dist_mean_sum = sum(.data$dist_mean),
+                overall_sd = sqrt(.data$dist_mean_sum / .data$n_grp)) %>%
       mutate(tooltip = paste0('Site: ', site,
-                              '\nStandard Deviation: ', round(overall_sd, 3)))
+                              '\nStandard Deviation: ', round(.data$overall_sd, 3)))
 
-    ylim_max <- test_site_score %>% filter(overall_sd == max(overall_sd)) %>% pull(overall_sd) + 1
-    ylim_min <- test_site_score %>% filter(overall_sd == min(overall_sd)) %>% pull(overall_sd) - 1
+    ylim_max <- test_site_score %>% filter(.data$overall_sd == max(.data$overall_sd)) %>% pull(.data$overall_sd) + 1
+    ylim_min <- test_site_score %>% filter(.data$overall_sd == min(.data$overall_sd)) %>% pull(.data$overall_sd) - 1
 
-    g2 <- ggplot(test_site_score, aes(y = overall_sd, x = site, color = site,
-                                      tooltip = tooltip)) +
+    g2 <- ggplot(test_site_score, aes(y = .data$overall_sd, x = site, color = site,
+                                      tooltip = .data$tooltip)) +
       geom_point_interactive(show.legend = FALSE) +
       theme_minimal() +
       scale_color_ssdqa() +
@@ -545,7 +545,7 @@ pf_ms_exp_cs <- function(data_tbl,
 
   r <- ggplot(data_format,
               aes(x=domain,y=!! sym(output), colour=site))+
-    geom_point_interactive(aes(data_id=site_lab, tooltip = site_lab), size=3)+
+    geom_point_interactive(aes(data_id=.data$site_lab, tooltip = .data$site_lab), size=3)+
     geom_point(aes(x=domain, y=!! sym(comp_var)), shape=8, size=3, color="black")+
     scale_color_ssdqa() +
     facet_wrap((facet), scales="free_x", ncol=2)+

@@ -105,10 +105,12 @@ compute_pf_medians <- function(data_input,
 
   data_input_cols <- data_input %>% colnames()
 
-  if('cohort' %in% data_input_cols) {
-    data_input_grp <-
-      data_input %>% group_by(cohort)
-  } else {data_input_grp <- data_input}
+  # if('cohort' %in% data_input_cols) {
+  #   data_input_grp <-
+  #     data_input %>% group_by(cohort)
+  # } else {
+    data_input_grp <- data_input
+    # }
 
   if(is.data.frame(agegrp)) {data_input_grp <- data_input_grp %>% group_by(age_grp,.add=TRUE) %>%
     mutate(age_grp = ifelse(is.na(age_grp), 'None', age_grp))}
