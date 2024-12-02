@@ -49,7 +49,7 @@
 #'
 #' @param visit_type_table a table that defines available visit types that are called in `visit_types.` defaults to the provided
 #'                           `pf_visit_file_(omop/pcornet)` file, which contains the following fields:
-#' - `visit_concept_id` or `enc_type`: the visit_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
+#' - `visit_concept_id`/`visit_detail_concept_id` or `enc_type`: the visit_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
 #' - `visit_type`: the string label to describe the visit type; this label can be used multiple times
 #' within the file if multiple visit_concept_ids/enc_types represent the visit type
 #'
@@ -96,6 +96,11 @@ pf_process_omop <- function(cohort = cohort,
   if(is.data.frame(age_groups)){grouped_list <- grouped_list %>% append('age_grp')}
   #if(is.data.frame(codeset)){grouped_list <- grouped_list %>% append('flag')}
 
+  # Pick visit table
+  if(any(names(visit_type_table) == 'visit_detail_concept_id')){
+    visit_tbl <- cdm_tbl('visit_detail')
+  }else{visit_tbl <- cdm_tbl('visit_occurrence')}
+
   if(time){
 
     grouped_list <- grouped_list[! grouped_list %in% 'fu']
@@ -115,6 +120,7 @@ pf_process_omop <- function(cohort = cohort,
                                                                             domain_tbl = domain_tbl)},
                                                   site_col = site_col,
                                                   time = TRUE,
+                                                  visit_tbl = visit_tbl,
                                                   visit_type_tbl=visit_type_table,
                                                   site_list=site_list_adj,
                                                   visit_list=visit_types,
@@ -134,6 +140,7 @@ pf_process_omop <- function(cohort = cohort,
       time = FALSE,
       site_list=site_list_adj,
       visit_list=visit_types,
+      visit_tbl = visit_tbl,
       visit_type_tbl=visit_type_table,
       grouped_list=grouped_list,
       domain_tbl = domain_tbl
