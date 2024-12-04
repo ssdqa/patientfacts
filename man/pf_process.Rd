@@ -2,7 +2,7 @@
 % Please edit documentation in R/pf_process.R
 \name{pf_process}
 \alias{pf_process}
-\title{Clinical Facts per Patient}
+\title{Patient Facts}
 \usage{
 pf_process(
   cohort = cohort,
@@ -99,7 +99,7 @@ a dataframe with summary results (i.e. medians) that can be used as the input fo
 if \code{patient_level_tbl = TRUE}, an additional dataframe is returned in a list format with patient level output
 }
 \description{
-This is a completeness check that will compute the number of facts per years of follow-up for each patient in
+This is a completeness module that will compute the number of facts per years of follow-up for each patient in
 a cohort. The user will provide the domains (\code{domain_tbl}) and visit types (\code{visit_type_tbl}) of interest.
 Sample versions of these inputs are included as data in the package and are accessible with \verb{patientfacts::}.
 Results can optionally be stratified by site, age group, visit type, and/or time. This function is compatible with

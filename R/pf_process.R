@@ -1,7 +1,7 @@
 
-#' Clinical Facts per Patient
+#' Patient Facts
 #'
-#' This is a completeness check that will compute the number of facts per years of follow-up for each patient in
+#' This is a completeness module that will compute the number of facts per years of follow-up for each patient in
 #' a cohort. The user will provide the domains (`domain_tbl`) and visit types (`visit_type_tbl`) of interest.
 #' Sample versions of these inputs are included as data in the package and are accessible with `patientfacts::`.
 #' Results can optionally be stratified by site, age group, visit type, and/or time. This function is compatible with

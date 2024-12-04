@@ -9,7 +9,7 @@
 
 A dataframe with 2 columns:
 \describe{
-\item{visit_concept_id}{The visit_concept_id as it appears in the visit_occurrence table}
+\item{visit_(detail)_concept_id}{The visit_concept_id OR visit_detail_concept_id as it appears in the visit_occurrence table}
 \item{visit_type}{A string to label the visit type of the visit_concept_id; this string is what should be referenced in the \code{visit_types} parameter}
 }
 }
@@ -21,5 +21,6 @@ pf_visit_file_omop
 A sample version of the file structure expected for the \code{visit_type_tbl}
 parameter in the \code{pf_process} function where the selected CDM is OMOP.
 The user should recreate this file and include their own domain definitions.
+Only ONE of visit_concept_id OR visit_detail_concept_id should be used.
 }
 \keyword{datasets}

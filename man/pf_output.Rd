@@ -2,7 +2,7 @@
 % Please edit documentation in R/pf_output.R
 \name{pf_output}
 \alias{pf_output}
-\title{Clinical Facts per Patient -- Output Generation}
+\title{Patient Facts -- Output Generation}
 \usage{
 pf_output(
   process_output,
