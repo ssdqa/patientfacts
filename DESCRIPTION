@@ -1,5 +1,5 @@
 Package: patientfacts
-Title: Patient Facts
+Title: Assess Patient Data Availability
 Version: 0.0.0.9000
 Authors@R: 
     c(person("Hanieh", "Razzaghi", email = "razzaghih@chop.edu", role = c("aut"),
