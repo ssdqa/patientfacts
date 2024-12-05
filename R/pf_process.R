@@ -51,7 +51,7 @@
 #'
 #' @param visit_type_table a table that defines available visit types that are called in `visit_types.` defaults to the provided
 #'                           `pf_visit_file_(omop/pcornet)` file, which contains the following fields:
-#' - `visit_concept_id` or `enc_type`: the visit_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
+#' - `visit_concept_id` / `visit_detail_concept_id` or `enc_type`: the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
 #' - `visit_type`: the string label to describe the visit type; this label can be used multiple times
 #'                                           within the file if multiple visit_concept_ids/enc_types represent the visit type
 #'

@@ -46,3 +46,8 @@ pf_output_example <- pf_output(process_output = pf_process_example %>%
                                output = 'median_site_without0s')
 
 pf_output_example
+
+#' Easily convert the graph into an interactive ggiraph or plotly object with
+#' `make_interactive_ssdqa()`
+
+make_interactive_ssdqa(pf_output_example)

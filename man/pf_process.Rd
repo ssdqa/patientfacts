@@ -88,7 +88,7 @@ outliers within the cohort.}
 \item{visit_type_table}{a table that defines available visit types that are called in \code{visit_types.} defaults to the provided
 \code{pf_visit_file_(omop/pcornet)} file, which contains the following fields:
 \itemize{
-\item \code{visit_concept_id} or \code{enc_type}: the visit_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
+\item \code{visit_concept_id} / \code{visit_detail_concept_id} or \code{enc_type}: the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
 \item \code{visit_type}: the string label to describe the visit type; this label can be used multiple times
 within the file if multiple visit_concept_ids/enc_types represent the visit type
 }}
@@ -154,4 +154,9 @@ pf_output_example <- pf_output(process_output = pf_process_example \%>\%
                                output = 'median_site_without0s')
 
 pf_output_example
+
+#' Easily convert the graph into an interactive ggiraph or plotly object with
+#' `make_interactive_ssdqa()`
+
+make_interactive_ssdqa(pf_output_example)
 }
