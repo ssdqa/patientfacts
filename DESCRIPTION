@@ -18,7 +18,7 @@ License: MPL-2.0
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/ssdqa/patientfacts, https://pedsnetapps.chop.edu/metadata/collections/69c64223-f9ce-4a80-bf1a-11f27a7fc794
+URL: https://github.com/ssdqa/patientfacts, https://pedsnetapps.chop.edu/metadata/handle/20.500.14642/32
 BugReports: https://github.com/ssdqa/patientfacts/issues
 Depends: 
     argos,
