@@ -86,7 +86,8 @@ pf_process_omop <- function(cohort = cohort,
 
   ## Step 2: Prep cohort
 
-  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups)
+  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups,
+                                omop_or_pcornet = 'omop')
 
   ## Step 3: Run Function
 
@@ -113,6 +114,7 @@ pf_process_omop <- function(cohort = cohort,
                             site_list = site_list_adj,
                             check_func = function(dat){
                               loop_through_visits(cohort_tbl = dat,
+                                                  omop_or_pcornet = 'omop',
                                                   check_func = function(cht, t){
                                                     compute_pf_for_fot_omop(cohort = cht,
                                                                             pf_input_tbl = t,
@@ -131,6 +133,7 @@ pf_process_omop <- function(cohort = cohort,
   } else {
     pf_tbl <- loop_through_visits(
       cohort_tbl=cohort_prep,
+      omop_or_pcornet = 'omop',
       check_func = function(cht, t){
         compute_pf_omop(cohort = cht,
                         pf_input_tbl = t,

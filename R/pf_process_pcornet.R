@@ -86,7 +86,8 @@ pf_process_pcornet <- function(cohort = cohort,
 
   ## Step 2: Prep cohort
 
-  cohort_prep <- prepare_cohort_pcnt(cohort_tbl = cohort_filter, age_groups = age_groups)
+  cohort_prep <- prepare_cohort(cohort_tbl = cohort_filter, age_groups = age_groups,
+                                omop_or_pcornet = 'pcornet')
 
   ## Step 3: Run Function
 
@@ -107,7 +108,8 @@ pf_process_pcornet <- function(cohort = cohort,
                           time_span = time_span,
                           site_list = site_list_adj,
                           check_func = function(dat){
-                            loop_through_visits_pcnt(cohort_tbl = dat,
+                            loop_through_visits(cohort_tbl = dat,
+                                                omop_or_pcornet = 'pcornet',
                                                     check_func = function(cht, t){
                                                       compute_pf_for_fot_pcnt(cohort = cht,
                                                                               pf_input_tbl = t,
@@ -123,8 +125,9 @@ pf_process_pcornet <- function(cohort = cohort,
                           })
 
   } else {
-    pf_tbl <- loop_through_visits_pcnt(
+    pf_tbl <- loop_through_visits(
       cohort_tbl=cohort_prep,
+      omop_or_pcornet = 'pcornet',
       check_func = function(cht, t){
         compute_pf_pcnt(cohort = cht,
                         pf_input_tbl = t,
