@@ -8,12 +8,12 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for using the SSDQA ecosystem! Please complete this form to submit a feature request for the Patient Facts module.
+        Thanks for using the SQUBA ecosystem! Please complete this form to submit a feature request for the Patient Facts module.
   - type: checkboxes
     attributes:
       label: Function
       description: Which function would benefit from this new feature?
-      options: 
+      options:
         - label: pf_process
         - label: pf_output
   - type: dropdown
@@ -21,7 +21,7 @@ body:
       label: Function Configuration
       description: Does this feature apply to a specific function configuration? Multiple selections are allowed if needed.
       multiple: true
-      options: 
+      options:
         - "Single Site, Exploratory, Cross-Sectional"
         - "Single Site, Anomaly Detection, Cross-Sectional"
         - "Single Site, Exploratory, Longitudinal"

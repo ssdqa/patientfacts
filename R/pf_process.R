@@ -59,7 +59,7 @@
 #' @return if `patient_level_tbl = TRUE`, an additional dataframe is returned in a list format with patient level output
 #'
 #' @import argos
-#' @import ssdqa.gen
+#' @import squba.gen
 #' @import dplyr
 #' @import cli
 #' @importFrom stringr str_wrap
