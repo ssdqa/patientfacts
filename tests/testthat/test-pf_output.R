@@ -3,8 +3,7 @@ test_that('errors on incorrect output_function', {
 
   tbl_test <- data.frame('test'= c(1, 2, 3))
 
-  expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_test'))
+  expect_error(pf_output(process_output = tbl_test))
 })
 
 
@@ -19,14 +18,13 @@ test_that('single site, exploratory, no time', {
                             'n_tot' = 100,
                             'n_w_fact' = 82,
                             'median_site_with0s' = 0,
-                            'median_site_without0s' = 5.1)
+                            'median_site_without0s' = 5.1,
+                            output_function = 'pf_ss_exp_cs')
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ss_exp_cs',
                             output = 'median_site_without0s'))
 
   expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_ss_exp_cs',
                          output = 'test'))
 
 })
@@ -43,14 +41,13 @@ test_that('multi site, exploratory, no time', {
                             'n_tot' = c(100, 500, 250),
                             'n_w_fact' = c(82, 473, 198),
                             'median_site_with0s' = c(0,0,0),
-                            'median_site_without0s' = c(4.7, 9.9, 3.3))
+                            'median_site_without0s' = c(4.7, 9.9, 3.3),
+                            output_function = c('pf_ms_exp_cs', 'pf_ms_exp_cs', 'pf_ms_exp_cs'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ms_exp_cs',
                             output = 'median_site_without0s'))
 
   expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_ms_exp_cs',
                          output = 'test'))
 
 })
@@ -76,14 +73,13 @@ test_that('multi site, anomaly, no time', {
                             'analysis_eligible' = c('yes','yes','yes'),
                             'lower_tail' = c(0.8134, 0.8134, 0.8134),
                             'upper_tail' = c(0.932, 0.932, 0.932),
-                            'anomaly_yn' = c('no outlier', 'outlier', 'outlier'))
+                            'anomaly_yn' = c('no outlier', 'outlier', 'outlier'),
+                            output_function = c('pf_ms_anom_cs', 'pf_ms_anom_cs', 'pf_ms_anom_cs'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ms_anom_cs',
                             visit_filter = 'inpatient'))
 
   expect_no_error(pf_output(process_output = tbl_test %>% dplyr::mutate(anomaly_yn = 'no outlier in group'),
-                            output_function = 'pf_ms_anom_cs',
                             visit_filter = 'inpatient'))
 
 
@@ -96,14 +92,13 @@ test_that('single site, anomaly, no time', {
                             'site' = 'a',
                             'visit_type' = 'inpatient',
                             'domain' = 'diagnoses',
-                            'prop_outlier_fact' = 0.04)
+                            'prop_outlier_fact' = 0.04,
+                            output_function = 'pf_ss_anom_cs')
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ss_anom_cs',
                             output = 'prop_outlier_fact'))
 
   expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_ss_anom_cs',
                          output = 'test'))
 
 })
@@ -116,14 +111,14 @@ test_that('single site, exploratory, time', {
                             'visit_type' = c('inpatient', 'inpatient', 'inpatient', 'inpatient', 'inpatient'),
                             'time_start' = c('2018-01-01', '2019-01-01', '2020-01-01', '2021-01-01', '2022-01-01'),
                             'time_increment' = c('year', 'year', 'year', 'year', 'year'),
-                            'median_fact_ct' = c(5, 6, 7, 8, 9))
+                            'median_fact_ct' = c(5, 6, 7, 8, 9),
+                            output_function = c('pf_ss_exp_la', 'pf_ss_exp_la', 'pf_ss_exp_la',
+                                                'pf_ss_exp_la', 'pf_ss_exp_la'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ss_exp_la',
                             output = 'median_fact_ct'))
 
   expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_ss_exp_la',
                          output = 'test'))
 
 })
@@ -140,14 +135,16 @@ test_that('multi site, exploratory, time', {
                                              '2018-01-01', '2019-01-01', '2020-01-01', '2021-01-01', '2022-01-01'),
                             'time_increment' = c('year', 'year', 'year', 'year', 'year',
                                                  'year', 'year', 'year', 'year', 'year'),
-                            'median_fact_ct' = c(5, 6, 7, 8, 9, 2, 4, 6, 8, 10))
+                            'median_fact_ct' = c(5, 6, 7, 8, 9, 2, 4, 6, 8, 10),
+                            output_function = c('pf_ms_exp_la', 'pf_ms_exp_la', 'pf_ms_exp_la',
+                                                'pf_ms_exp_la', 'pf_ms_exp_la', 'pf_ms_exp_la',
+                                                'pf_ms_exp_la', 'pf_ms_exp_la', 'pf_ms_exp_la',
+                                                'pf_ms_exp_la'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ms_exp_la',
                             output = 'median_fact_ct'))
 
   expect_error(pf_output(process_output = tbl_test,
-                         output_function = 'pf_ms_exp_la',
                          output = 'test'))
 
 })
@@ -167,10 +164,13 @@ test_that('multi site, anomaly, time', {
                             'median' = c(0.87, 0.87, 0.87, 0.87, 0.87, 0.87, 0.87, 0.87, 0.87, 0.87),
                             'date_numeric' = c(17000, 17000, 17000, 17000, 17000, 17000, 17000, 17000, 17000, 17000),
                             'site_loess' = c(0.84, 0.87, 0.89, 0.91, 0.89, 0.73, 0.81, 0.83, 0.94, 0.94),
-                            'dist_eucl_mean' = c(0.84,0.84,0.84,0.84,0.84,0.9,0.9,0.9,0.9,0.9))
+                            'dist_eucl_mean' = c(0.84,0.84,0.84,0.84,0.84,0.9,0.9,0.9,0.9,0.9),
+                            output_function = c('pf_ms_anom_la', 'pf_ms_anom_la', 'pf_ms_anom_la',
+                                                'pf_ms_anom_la', 'pf_ms_anom_la', 'pf_ms_anom_la',
+                                                'pf_ms_anom_la', 'pf_ms_anom_la', 'pf_ms_anom_la',
+                                                'pf_ms_anom_la'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ms_anom_la',
                             visit_filter = 'inpatient',
                             domain_filter = 'diagnoses'))
 
@@ -186,10 +186,11 @@ test_that('single site, anomaly, time - year', {
                             'time_increment' = c('year', 'year', 'year', 'year', 'year'),
                             'prop_pts_fact' = c(0.5, 0.6, 0.7, 0.8, 0.9),
                             'pts_w_fact' = c(5, 6, 7, 8, 9),
-                            'pts_w_visit' = c(10,11,12,13,14))
+                            'pts_w_visit' = c(10,11,12,13,14),
+                            output_function = c('pf_ss_anom_la', 'pf_ss_anom_la', 'pf_ss_anom_la',
+                                                'pf_ss_anom_la', 'pf_ss_anom_la'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ss_anom_la',
                             visit_filter = 'inpatient',
                             domain_filter = 'diagnoses'))
 
@@ -217,10 +218,11 @@ test_that('single site, anomaly, time - month', {
                             'anomaly_score' = c(1,2,3,4,5),
                             'recomposed_l1' = c(0.44, 0.6, 0.5, 0.49, 0.46),
                             'recomposed_l2' = c(0.84, 0.8, 0.8, 0.89, 0.86),
-                            'observed_clean' = c(0.46, 0.57, 0.69, 0.82, 0.88))
+                            'observed_clean' = c(0.46, 0.57, 0.69, 0.82, 0.88),
+                            output_function = c('pf_ss_anom_la', 'pf_ss_anom_la', 'pf_ss_anom_la',
+                                                'pf_ss_anom_la', 'pf_ss_anom_la'))
 
   expect_no_error(pf_output(process_output = tbl_test,
-                            output_function = 'pf_ss_anom_la',
                             visit_filter = 'inpatient',
                             domain_filter = 'diagnoses'))
 

@@ -6,7 +6,6 @@
 \usage{
 pf_output(
   process_output,
-  output_function,
   output,
   date_breaks_str = "1 year",
   domain_filter = NULL,
@@ -14,23 +13,18 @@ pf_output(
 )
 }
 \arguments{
-\item{process_output}{the summary dataframe output by the \code{pf_process} function.
+\item{process_output}{\emph{tabular input} | the summary dataframe output by the \code{pf_process} function.
 
 Note any patient-level results generated are not intended to be used with this function.}
 
-\item{output_function}{the name of the output function that should be executed, provided in the message output
-to the console after \code{pf_process} has been executed}
+\item{output}{\emph{string} | the numerical variable in \code{process_output} that should be used to generate the graph}
 
-\item{output}{the numerical variable in \code{process_output} that should be used to generate the graph}
-
-\item{date_breaks_str}{for \code{pf_ss_exp_la} only, a string that informs the program how the
+\item{date_breaks_str}{\emph{string} | for \code{ss_exp_la} only, a string that informs the program how the
 time period should be divided (i.e. '1 year', '3 months', etc). Defaults to 1 year.}
 
-\item{domain_filter}{for \code{pf_ms_anom_la} only, the single domain to which the graph should be filtered for displaying
-Euclidean distance values}
+\item{domain_filter}{\emph{string} | the domain to which the graph should be filtered; used for \code{ms_anom_la} & \code{ss_anom_la}}
 
-\item{visit_filter}{for \code{pf_ms_anom_la} only, the single visit type to which the graph should be filtered for displaying
-Euclidean distance values}
+\item{visit_filter}{\emph{string} | the visit type to which the graph should be filtered; used for \code{ms_anom_cs}, \code{ms_anom_la}, & \code{ss_anom_la}}
 }
 \value{
 a graph summarizing the data output by \code{pf_process}; see individual output functions for specific details
@@ -86,7 +80,6 @@ pf_process_example
 #' The 0s are a limitation of the small sample data set used for this example
 pf_output_example <- pf_output(process_output = pf_process_example \%>\%
                                  dplyr::mutate(median_site_without0s = 4),
-                               output_function = 'pf_ss_exp_cs',
                                output = 'median_site_without0s')
 
 pf_output_example

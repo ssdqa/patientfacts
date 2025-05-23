@@ -42,7 +42,6 @@ pf_process_example
 #' The 0s are a limitation of the small sample data set used for this example
 pf_output_example <- pf_output(process_output = pf_process_example %>%
                                  dplyr::mutate(median_site_without0s = 4),
-                               output_function = 'pf_ss_exp_cs',
                                output = 'median_site_without0s')
 
 pf_output_example

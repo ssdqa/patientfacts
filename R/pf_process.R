@@ -7,52 +7,52 @@
 #' Results can optionally be stratified by site, age group, visit type, and/or time. This function is compatible with
 #' both the OMOP and the PCORnet CDMs based on the user's selection.
 #'
-#' @param cohort A dataframe with the cohort of patients for your study. Should include the columns:
-#' - person_id
-#' - start_date
-#' - end_date
-#' - site
-#' @param study_name A custom string label with the name of your study
-#' @param patient_level_tbl logical indicating whether an additional table with patient level results should be output;
+#' @param cohort *tabular input* | A dataframe with the cohort of patients for your study. Should include the columns:
+#' - `person_id` / `patid` | *integer* / *character*
+#' - `start_date` | *date*
+#' - `end_date` | *date*
+#' - `site` | *date*
+#' @param study_name *string* | A custom string label with the name of your study
+#' @param patient_level_tbl *boolean* | logical indicating whether an additional table with patient level results should be output;
 #'                          if TRUE, the output of this function will be a list containing both the summary and patient level
 #'                          output. Otherwise, this function will just output the summary dataframe
-#' @param visit_types A list of visit types by which the output should be stratified. Options for visit types can be found or adjusted
+#' @param visit_types *vector* | A vector of visit types by which the output should be stratified. Options for visit types can be found or adjusted
 #'                    in the provided `pf_visit_file_(omop/pcornet)` file. If you would not like to stratify your results by visit type, please
 #'                    set the visit_types argument equal to `all`
-#' @param omop_or_pcornet Option to run the function using the OMOP or PCORnet CDM as the default CDM
+#' @param omop_or_pcornet *string* | Option to run the function using the OMOP or PCORnet CDM as the default CDM
 #' - `omop`: run the [pf_process_omop()] function against an OMOP CDM instance
 #' - `pcornet`: run the [pf_process_pcornet()] function against a PCORnet CDM instance
-#' @param multi_or_single_site Option to run the function on a single vs multiple sites
+#' @param multi_or_single_site *string* | Option to run the function on a single vs multiple sites
 #' - `single`: run the function for a single site
 #' - `multi`: run the function for multiple sites
-#' @param time a logical that tells the function whether you would like to look at the output cross-sectionally (FALSE) or longitudinally (TRUE)
-#' @param time_span when `time = TRUE`, this argument defines the start and end dates for the time period of interest. should be
+#' @param time *boolean* | a logical that tells the function whether you would like to look at the output cross-sectionally (FALSE) or longitudinally (TRUE)
+#' @param time_span *vector - length 2* | when `time = TRUE`, this argument defines the start and end dates for the time period of interest. should be
 #'                  formatted as `c(start date, end date)` in `yyyy-mm-dd` date format.
-#' @param time_period when `time = TRUE`, this argument defines the distance between dates within the specified time period. defaults
+#' @param time_period *string* | when `time = TRUE`, this argument defines the distance between dates within the specified time period. defaults
 #'                    to `year`, but other time periods such as `month` or `week` are also acceptable
-#' @param p_value an integer indicating the p value to be used as a threshold in the multi-site anomaly detection analysis
-#' @param age_groups If you would like to stratify the results by age group, create a table or CSV file with the following
+#' @param p_value *numeric* | an integer indicating the p value to be used as a threshold in the multi-site anomaly detection analysis
+#' @param age_groups *tabular input* | If you would like to stratify the results by age group, create a table or CSV file with the following
 #'                   columns and include it as the `age_groups` function parameter:
-#' - `min_age`: the minimum age for the group (i.e. 10)
-#' - `max_age`: the maximum age for the group (i.e. 20)
-#' - `group`: a string label for the group (i.e. "10-20", "Young Adult", etc.)
+#' - `min_age` | *integer* | the minimum age for the group (i.e. 10)
+#' - `max_age` | *integer* | the maximum age for the group (i.e. 20)
+#' - `group` | *character* | a string label for the group (i.e. "10-20", "Young Adult", etc.)
 #'
 #' If you would *not* like to stratify by age group, leave the argument as `NULL`
 #'
-#' @param anomaly_or_exploratory Option to conduct an `exploratory` or `anomaly` detection analysis.
+#' @param anomaly_or_exploratory *string* | Option to conduct an `exploratory` or `anomaly` detection analysis.
 #'                               Exploratory analyses give a high level summary of the data to examine the
 #'                               fact representation within the cohort. Anomaly detection analyses are specialized to identify
 #'                               outliers within the cohort.
-#' @param domain_tbl a table that defines the domains where facts should be identified. defaults to the provided
+#' @param domain_tbl *tabular input* | a table that defines the domains where facts should be identified. defaults to the provided
 #'                   `pf_domain_file` table, which contains the following fields:
-#' - `domain`: a string label for the domain being examined (i.e. prescription drugs)
-#' - `domain_tbl`: the CDM table where information for this domain can be found (i.e. drug_exposure)
-#' - `filter_logic`: an optional string to be parsed as logic to filter the domain_tbl as needed to best represent the domain
+#' - `domain` | *character* | a string label for the domain being examined (i.e. prescription drugs)
+#' - `domain_tbl` | *character* | the CDM table where information for this domain can be found (i.e. drug_exposure)
+#' - `filter_logic` | *character* | an optional string to be parsed as logic to filter the domain_tbl as needed to best represent the domain
 #'
-#' @param visit_type_table a table that defines available visit types that are called in `visit_types.` defaults to the provided
+#' @param visit_type_table *tabular input* | a table that defines available visit types that are called in `visit_types.` defaults to the provided
 #'                           `pf_visit_file_(omop/pcornet)` file, which contains the following fields:
-#' - `visit_concept_id` / `visit_detail_concept_id` or `enc_type`: the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
-#' - `visit_type`: the string label to describe the visit type; this label can be used multiple times
+#' - `visit_concept_id` / `visit_detail_concept_id` or `enc_type` | *integer* or *character* | the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
+#' - `visit_type` | *character* | the string label to describe the visit type; this label can be used multiple times
 #'                                           within the file if multiple visit_concept_ids/enc_types represent the visit type
 #'
 #' @return a dataframe with summary results (i.e. medians) that can be used as the input for `pf_output` to generate graphical output
@@ -131,8 +131,16 @@ pf_process<- function(cohort = cohort,
 
   }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
 
-  cli::cli_inform(paste0(col_green('Based on your chosen parameters, we recommend using the following
-                       output function in pf_output: '), col_blue(style_bold(output_type,'.'))))
+  if('list' %in% class(pf_rslt)){
+    pf_rslt[[1]] <- pf_rslt[[1]] %>% mutate(output_function = output_type$string)
+  }else{
+    pf_rslt <- pf_rslt %>% mutate(output_function = output_type$string)
+  }
+
+  print(cli::boxx(c('You can optionally use this dataframe in the accompanying',
+                    '`pf_output` function. Here are the parameters you will need:', '', output_type$vector, '',
+                    'See ?pf_output for more details.'), padding = c(0,1,0,1),
+                  header = cli::col_cyan('Output Function Details')))
 
   return(pf_rslt)
 }
