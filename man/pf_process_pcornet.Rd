@@ -17,6 +17,7 @@ pf_process_pcornet(
   age_groups = NULL,
   anomaly_or_exploratory = "exploratory",
   domain_tbl = patientfacts::pf_domain_file,
+  visit_tbl = cdm_tbl("encounter"),
   visit_type_table = patientfacts::pf_visit_file_pcornet
 )
 }
@@ -77,6 +78,8 @@ outliers within the cohort.}
 \item \code{domain_tbl}: the CDM table where information for this domain can be found (i.e. drug_exposure)
 \item \code{filter_logic}: an optional string to be parsed as logic to filter the domain_tbl as needed to best represent the domain
 }}
+
+\item{visit_tbl}{the CDM table with visit information (i.e. visit_occurrence or encounter)}
 
 \item{visit_type_table}{a table that defines available visit types that are called in \code{visit_types.} defaults to the provided
 \code{pf_visit_file_(omop/pcornet)} file, which contains the following fields:

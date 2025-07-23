@@ -48,7 +48,7 @@
 #' - `domain` | *character* | a string label for the domain being examined (i.e. prescription drugs)
 #' - `domain_tbl` | *character* | the CDM table where information for this domain can be found (i.e. drug_exposure)
 #' - `filter_logic` | *character* | an optional string to be parsed as logic to filter the domain_tbl as needed to best represent the domain
-#'
+#' @param visit_tbl the CDM table with visit information (i.e. visit_occurrence or encounter)
 #' @param visit_type_table *tabular input* | a table that defines available visit types that are called in `visit_types.` defaults to the provided
 #'                           `pf_visit_file_(omop/pcornet)` file, which contains the following fields:
 #' - `visit_concept_id` / `visit_detail_concept_id` or `enc_type` | *integer* or *character* | the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
@@ -83,6 +83,7 @@ pf_process<- function(cohort = cohort,
                       age_groups = NULL,
                       anomaly_or_exploratory='exploratory',
                       domain_tbl=patientfacts::pf_domain_file,
+                      visit_tbl=cdm_tbl("visit_occurrence"),
                       visit_type_table=patientfacts::pf_visit_file_omop){
 
   ## Check proper arguments
