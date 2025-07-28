@@ -111,6 +111,7 @@ pf_process<- function(cohort = cohort,
                                #codeset = NULL,
                                anomaly_or_exploratory=anomaly_or_exploratory,
                                domain_tbl=domain_tbl,
+                               visit_tbl=visit_tbl,
                                visit_type_table=visit_type_table)
 
   }else if(tolower(omop_or_pcornet) == 'pcornet'){
@@ -128,6 +129,7 @@ pf_process<- function(cohort = cohort,
                                   #codeset = NULL,
                                   anomaly_or_exploratory=anomaly_or_exploratory,
                                   domain_tbl=domain_tbl,
+                                  visit_tbl=visit_tbl,
                                   visit_type_table=visit_type_table)
 
   }else{cli::cli_abort('Invalid argument for {.code omop_or_pcornet}: this function is only compatible with {.code omop} or {.code pcornet}')}
