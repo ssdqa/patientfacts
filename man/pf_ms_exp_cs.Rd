@@ -4,7 +4,7 @@
 \alias{pf_ms_exp_cs}
 \title{\strong{Multi-Site, Exploratory, Cross-Sectional}}
 \usage{
-pf_ms_exp_cs(data_tbl, output, facet)
+pf_ms_exp_cs(data_tbl, output, facet, large_n = FALSE, large_n_sites = NULL)
 }
 \arguments{
 \item{data_tbl}{output from \code{pf_process} function}
@@ -18,6 +18,11 @@ pf_ms_exp_cs(data_tbl, output, facet)
 }}
 
 \item{facet}{variables to facet (e.g., \code{domain}); vector of strings}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 }
 \value{
 a dot plot displaying the median facts per follow up for each domain

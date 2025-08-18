@@ -16,7 +16,11 @@ output_cols <- c("study", "site", "visit_type", "domain", "median_all_with0s",
                  "date_numeric", "site_loess", "dist_eucl_mean", "observed",
                  "season", "trend", "remainder", "seasadj", "anomaly",
                  "anomaly_direction", "anomaly_score", "recomposed_l1",
-                 "recomposed_l2", "observed_clean")
+                 "recomposed_l2", "observed_clean", "allsite_max_med",
+                 "allsite_min_med", "allsite_sum", "closest_site",
+                 "delim", "farthest_site", "iqr_val", "mean_site_loess",
+                 "nvar", "prop", "q1", "q3", "site_anoms", "site_w_anom",
+                 "value", "zscr", "tooltip", "text_raw")
 
 utils::globalVariables(c('.', 'site', 'person_id', 'patid', 'visit_occurrence_id',
                        'encounterid', 'visit_type', 'age_grp', 'var_val', 'zscore_tot',

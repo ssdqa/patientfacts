@@ -9,7 +9,9 @@ pf_output(
   output,
   date_breaks_str = "1 year",
   domain_filter = NULL,
-  visit_filter = NULL
+  visit_filter = NULL,
+  large_n = FALSE,
+  large_n_sites = NULL
 )
 }
 \arguments{
@@ -25,6 +27,11 @@ time period should be divided (i.e. '1 year', '3 months', etc). Defaults to 1 ye
 \item{domain_filter}{\emph{string} | the domain to which the graph should be filtered; used for \code{ms_anom_la} & \code{ss_anom_la}}
 
 \item{visit_filter}{\emph{string} | the visit type to which the graph should be filtered; used for \code{ms_anom_cs}, \code{ms_anom_la}, & \code{ss_anom_la}}
+
+\item{large_n}{\emph{boolean} | for multi site analyses, a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{\emph{vector} | when large_n is TRUE, a vector of site names that can optionally generate a filtered visualization}
 }
 \value{
 a graph summarizing the data output by \code{pf_process}; see individual output functions for specific details
