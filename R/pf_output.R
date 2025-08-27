@@ -14,6 +14,9 @@
 #'                        time period should be divided (i.e. '1 year', '3 months', etc). Defaults to 1 year.
 #' @param domain_filter *string* | the domain to which the graph should be filtered; used for `ms_anom_la` & `ss_anom_la`
 #' @param visit_filter *string* | the visit type to which the graph should be filtered; used for `ms_anom_cs`, `ms_anom_la`, & `ss_anom_la`
+#' @param large_n *boolean* | for multi site analyses, a boolean indicating whether the large N visualization, intended for a high
+#'                volume of sites, should be used; defaults to FALSE
+#' @param large_n_sites *vector* | when large_n is TRUE, a vector of site names that can optionally generate a filtered visualization
 #'
 #' @return a graph summarizing the data output by `pf_process`; see individual output functions for specific details
 #'
@@ -27,7 +30,9 @@ pf_output <- function(process_output,
                       #facet = NULL,
                       date_breaks_str = '1 year',
                       domain_filter = NULL,
-                      visit_filter = NULL){
+                      visit_filter = NULL,
+                      large_n = FALSE,
+                      large_n_sites = NULL){
 
   # extract output_function
   output_function <- process_output %>% collect() %>% ungroup() %>% distinct(output_function) %>% pull()
@@ -38,7 +43,9 @@ pf_output <- function(process_output,
   if(output_function == 'pf_ms_anom_cs'){
     pf_output <- pf_ms_anom_cs(data_tbl = process_output,
                                facet = facet,
-                               visit_filter = visit_filter)
+                               visit_filter = visit_filter,
+                               large_n = large_n,
+                               large_n_sites = large_n_sites)
   }else if(output_function == 'pf_ss_anom_cs'){
     pf_output <- pf_ss_anom_cs(data_tbl = process_output,
                                output = output,
@@ -46,7 +53,9 @@ pf_output <- function(process_output,
   }else if(output_function == 'pf_ms_exp_cs'){
     pf_output <- pf_ms_exp_cs(data_tbl = process_output,
                               output = output,
-                              facet = facet)
+                              facet = facet,
+                              large_n = large_n,
+                              large_n_sites = large_n_sites)
   }else if(output_function == 'pf_ss_exp_cs'){
     pf_output <- pf_ss_exp_cs(data_tbl = process_output,
                               output = output,
@@ -54,7 +63,9 @@ pf_output <- function(process_output,
   }else if(output_function == 'pf_ms_anom_la'){
     pf_output <- pf_ms_anom_la(process_output = process_output,
                                domain_filter = domain_filter,
-                               visit_filter = visit_filter)
+                               visit_filter = visit_filter,
+                               large_n = large_n,
+                               large_n_sites = large_n_sites)
   }else if(output_function == 'pf_ss_anom_la'){
     pf_output <- pf_ss_anom_la(data_tbl = process_output,
                                #output = output,
@@ -64,7 +75,9 @@ pf_output <- function(process_output,
   }else if(output_function == 'pf_ms_exp_la'){
     pf_output <- pf_ms_exp_la(data_tbl = process_output,
                               output = output,
-                              facet = facet)
+                              facet = facet,
+                              large_n = large_n,
+                              large_n_sites = large_n_sites)
   }else if(output_function == 'pf_ss_exp_la'){
     pf_output <- pf_ss_exp_la(data_tbl = process_output,
                               output = output,

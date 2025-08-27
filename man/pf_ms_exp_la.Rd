@@ -4,7 +4,13 @@
 \alias{pf_ms_exp_la}
 \title{\strong{Multi-Site, Exploratory, Longitudinal}}
 \usage{
-pf_ms_exp_la(data_tbl, output, facet = NULL)
+pf_ms_exp_la(
+  data_tbl,
+  output,
+  facet = NULL,
+  large_n = FALSE,
+  large_n_sites = NULL
+)
 }
 \arguments{
 \item{data_tbl}{output from \code{pf_process} function}
@@ -17,6 +23,11 @@ specified time period
 }}
 
 \item{facet}{variables to facet (e.g., \code{domain}); vector of strings}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 }
 \value{
 line graph representing the output variable of interest across time

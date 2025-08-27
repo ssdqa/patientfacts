@@ -4,7 +4,13 @@
 \alias{pf_ms_anom_cs}
 \title{\strong{Multi-Site, Anomaly Detection, Cross-Sectional}}
 \usage{
-pf_ms_anom_cs(data_tbl, facet = NULL, visit_filter = "inpatient")
+pf_ms_anom_cs(
+  data_tbl,
+  facet = NULL,
+  visit_filter = "inpatient",
+  large_n = FALSE,
+  large_n_sites = NULL
+)
 }
 \arguments{
 \item{data_tbl}{output from \code{pf_process} function}
@@ -12,6 +18,11 @@ pf_ms_anom_cs(data_tbl, facet = NULL, visit_filter = "inpatient")
 \item{facet}{variables to facet (e.g., \code{domain}); vector of strings}
 
 \item{visit_filter}{the single visit_type of interest to be used in the analysis}
+
+\item{large_n}{a boolean indicating whether the large N visualization, intended for a high
+volume of sites, should be used; defaults to FALSE}
+
+\item{large_n_sites}{a vector of site names that can optionally generate a filtered visualization}
 }
 \value{
 a dot plot where the shape of the dot represents whether the point is
