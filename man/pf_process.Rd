@@ -7,99 +7,135 @@
 pf_process(
   cohort = cohort,
   study_name = "my_study",
-  patient_level_tbl = FALSE,
-  visit_types = c("outpatient", "inpatient"),
   omop_or_pcornet = "omop",
   multi_or_single_site = "single",
+  anomaly_or_exploratory = "exploratory",
   time = FALSE,
-  time_span = c("2014-01-01", "2023-01-01"),
+  time_span = c("2012-01-01", "2020-01-01"),
   time_period = "year",
   p_value = 0.9,
   age_groups = NULL,
-  anomaly_or_exploratory = "exploratory",
+  patient_level_tbl = FALSE,
+  visit_types = c("outpatient", "inpatient"),
   domain_tbl = patientfacts::pf_domain_file,
   visit_tbl = cdm_tbl("visit_occurrence"),
   visit_type_table = patientfacts::pf_visit_file_omop
 )
 }
 \arguments{
-\item{cohort}{\emph{tabular input} | A dataframe with the cohort of patients for your study. Should include the columns:
+\item{cohort}{\emph{tabular input} || \strong{required}
+
+The cohort to be used for data quality testing. This table should contain,
+at minimum:
 \itemize{
-\item \code{person_id} / \code{patid} | \emph{integer} / \emph{character}
-\item \code{start_date} | \emph{date}
-\item \code{end_date} | \emph{date}
-\item \code{site} | \emph{date}
-}}
+\item \code{site} | \emph{character} | the name(s) of institutions included in your cohort
+\item \code{person_id} / \code{patid} | \emph{integer} / \emph{character} | the patient identifier
+\item \code{start_date} | \emph{date} | the start of the cohort period
+\item \code{end_date} | \emph{date} | the end of the cohort period
+}
 
-\item{study_name}{\emph{string} | A custom string label with the name of your study}
+Note that the start and end dates included in this table will be used to
+limit the search window for the analyses in this module.}
 
-\item{patient_level_tbl}{\emph{boolean} | logical indicating whether an additional table with patient level results should be output;
-if TRUE, the output of this function will be a list containing both the summary and patient level
-output. Otherwise, this function will just output the summary dataframe}
+\item{study_name}{\emph{string} || defaults to \code{my_study}
 
-\item{visit_types}{\emph{vector} | A vector of visit types by which the output should be stratified. Options for visit types can be found or adjusted
-in the provided \code{pf_visit_file_(omop/pcornet)} file. If you would not like to stratify your results by visit type, please
-set the visit_types argument equal to \code{all}}
+A string identifier for the name of your study}
 
-\item{omop_or_pcornet}{\emph{string} | Option to run the function using the OMOP or PCORnet CDM as the default CDM
+\item{omop_or_pcornet}{\emph{string} || \strong{required}
+
+A string, either \code{omop} or \code{pcornet}, indicating the CDM format of the data
 \itemize{
 \item \code{omop}: run the \code{\link[=pf_process_omop]{pf_process_omop()}} function against an OMOP CDM instance
 \item \code{pcornet}: run the \code{\link[=pf_process_pcornet]{pf_process_pcornet()}} function against a PCORnet CDM instance
 }}
 
-\item{multi_or_single_site}{\emph{string} | Option to run the function on a single vs multiple sites
-\itemize{
-\item \code{single}: run the function for a single site
-\item \code{multi}: run the function for multiple sites
-}}
+\item{multi_or_single_site}{\emph{string} || defaults to \code{single}
 
-\item{time}{\emph{boolean} | a logical that tells the function whether you would like to look at the output cross-sectionally (FALSE) or longitudinally (TRUE)}
+A string, either \code{single} or \code{multi}, indicating whether a single-site or
+multi-site analysis should be executed}
 
-\item{time_span}{\emph{vector - length 2} | when \code{time = TRUE}, this argument defines the start and end dates for the time period of interest. should be
-formatted as \verb{c(start date, end date)} in \code{yyyy-mm-dd} date format.}
+\item{anomaly_or_exploratory}{\emph{string} || defaults to \code{exploratory}
 
-\item{time_period}{\emph{string} | when \code{time = TRUE}, this argument defines the distance between dates within the specified time period. defaults
-to \code{year}, but other time periods such as \code{month} or \code{week} are also acceptable}
+A string, either \code{anomaly} or \code{exploratory}, indicating what type of results
+should be produced.
 
-\item{p_value}{\emph{numeric} | an integer indicating the p value to be used as a threshold in the multi-site anomaly detection analysis}
+Exploratory analyses give a high level summary of the data to examine the
+fact representation within the cohort. Anomaly detection analyses are
+specialized to identify outliers within the cohort.}
 
-\item{age_groups}{\emph{tabular input} | If you would like to stratify the results by age group, create a table or CSV file with the following
-columns and include it as the \code{age_groups} function parameter:
+\item{time}{\emph{boolean} || defaults to \code{FALSE}
+
+A boolean to indicate whether to execute a longitudinal analysis}
+
+\item{time_span}{\emph{vector - length 2} || defaults to \code{c('2012-01-01', '2020-01-01')}
+
+A vector indicating the lower and upper bounds of the time series for longitudinal analyses}
+
+\item{time_period}{\emph{string} || defaults to \code{year}
+
+A string indicating the distance between dates within the specified time_span.
+Defaults to \code{year}, but other time periods such as \code{month} or \code{week} are
+also acceptable}
+
+\item{p_value}{\emph{numeric} || defaults to \code{0.9}
+
+The p value to be used as a threshold in the Multi-Site,
+Anomaly Detection, Cross-Sectional analysis}
+
+\item{age_groups}{\emph{tabular input} || defaults to \code{NULL}
+
+If you would like to stratify the results by age group, create a table or
+CSV file with the following columns and use it as input to this parameter:
 \itemize{
 \item \code{min_age} | \emph{integer} | the minimum age for the group (i.e. 10)
 \item \code{max_age} | \emph{integer} | the maximum age for the group (i.e. 20)
-\item \code{group} | \emph{character} | a string label for the group (i.e. "10-20", "Young Adult", etc.)
+\item \code{group} | \emph{character} | a string label for the group (i.e. 10-20, Young Adult, etc.)
 }
 
-If you would \emph{not} like to stratify by age group, leave the argument as \code{NULL}}
+If you would \emph{not} like to stratify by age group, leave as \code{NULL}}
 
-\item{anomaly_or_exploratory}{\emph{string} | Option to conduct an \code{exploratory} or \code{anomaly} detection analysis.
-Exploratory analyses give a high level summary of the data to examine the
-fact representation within the cohort. Anomaly detection analyses are specialized to identify
-outliers within the cohort.}
+\item{patient_level_tbl}{\emph{boolean} || defaults to \code{FALSE}
 
-\item{domain_tbl}{\emph{tabular input} | a table that defines the domains where facts should be identified. defaults to the provided
-\code{pf_domain_file} table, which contains the following fields:
+A boolean indicating whether an additional table with patient level results should be output.
+
+If \code{TRUE}, the output of this function will be a list containing both the summary and patient level
+output. Otherwise, this function will just output the summary dataframe}
+
+\item{visit_types}{\emph{string or vector} || defaults to \code{c('outpatient', 'inpatient')}
+
+A string or vector of visit types by which the output should be stratified. Each
+visit type listed in this parameter should match an associated visit type defined
+in the \code{visit_type_table}}
+
+\item{domain_tbl}{\emph{tabular input} || \strong{required}
+
+A table that defines the fact domains to be investigated in the analysis. This
+input should contain:
 \itemize{
 \item \code{domain} | \emph{character} | a string label for the domain being examined (i.e. prescription drugs)
 \item \code{domain_tbl} | \emph{character} | the CDM table where information for this domain can be found (i.e. drug_exposure)
-\item \code{filter_logic} | \emph{character} | an optional string to be parsed as logic to filter the domain_tbl as needed to best represent the domain
+\item \code{filter_logic} | \emph{character} | logic to be applied to the domain_tbl in order to achieve the definition of interest; should be written as if you were applying it in a dplyr::filter command in R
 }}
 
-\item{visit_tbl}{the CDM table with visit information (i.e. visit_occurrence or encounter)}
+\item{visit_tbl}{\emph{tabular input} || defaults to \code{cdm_tbl('visit_occurrence')}
 
-\item{visit_type_table}{\emph{tabular input} | a table that defines available visit types that are called in \code{visit_types.} defaults to the provided
-\code{pf_visit_file_(omop/pcornet)} file, which contains the following fields:
+The CDM table with visit information (i.e. visit_occurrence or encounter)}
+
+\item{visit_type_table}{\emph{tabular input} || \strong{required}
+
+A table that defines visit types of interest called in \code{visit_types.} This input
+should contain:
 \itemize{
-\item \code{visit_concept_id} / \code{visit_detail_concept_id} or \code{enc_type} | \emph{integer} or \emph{character} | the visit_(detail)_concept_id or enc_type that represents the visit type of interest (i.e. 9201 or IP)
-\item \code{visit_type} | \emph{character} | the string label to describe the visit type; this label can be used multiple times
-within the file if multiple visit_concept_ids/enc_types represent the visit type
+\item \code{visit_concept_id} / \code{visit_detail_concept_id} or \code{enc_type} | \emph{integer} or \emph{character} | the \verb{visit_(detail)_concept_id} or \code{enc_type} that represents the visit type of interest (i.e. 9201 or IP)
+\item \code{visit_type} | \emph{character} | the string label to describe the visit type
 }}
 }
 \value{
-a dataframe with summary results (i.e. medians) that can be used as the input for \code{pf_output} to generate graphical output
-
-if \code{patient_level_tbl = TRUE}, an additional dataframe is returned in a list format with patient level output
+This function will return a dataframe summarizing the
+distribution of facts per visit type for each user defined variable.
+It can also optionally return un-summarized patient-level
+distributions. For a more detailed description of output specific to
+each check type, see the PEDSpace metadata repository
 }
 \description{
 This is a completeness module that will compute the number of facts per years of follow-up for each patient in

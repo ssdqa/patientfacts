@@ -6,19 +6,60 @@
 #' be adjusted by the user after the graph has been output using `+ theme()`. Most graphs can
 #' also be made interactive using `make_interactive_squba()`
 #'
-#' @param process_output *tabular input* | the summary dataframe output by the `pf_process` function.
+#' @param process_output *tabular input* || **required**
 #'
-#' Note any patient-level results generated are not intended to be used with this function.
-#' @param output *string* | the numerical variable in `process_output` that should be used to generate the graph
-#' @param date_breaks_str *string* | for `ss_exp_la` only, a string that informs the program how the
-#'                        time period should be divided (i.e. '1 year', '3 months', etc). Defaults to 1 year.
-#' @param domain_filter *string* | the domain to which the graph should be filtered; used for `ms_anom_la` & `ss_anom_la`
-#' @param visit_filter *string* | the visit type to which the graph should be filtered; used for `ms_anom_cs`, `ms_anom_la`, & `ss_anom_la`
-#' @param large_n *boolean* | for multi site analyses, a boolean indicating whether the large N visualization, intended for a high
-#'                volume of sites, should be used; defaults to FALSE
-#' @param large_n_sites *vector* | when large_n is TRUE, a vector of site names that can optionally generate a filtered visualization
+#'   The tabular output produced by `pf_process`
 #'
-#' @return a graph summarizing the data output by `pf_process`; see individual output functions for specific details
+#'   Note any patient-level results generated are not intended to be used with this function.
+#'
+#' @param output *string* || defaults to `NULL`
+#'
+#'   The name of the numerical variable from `process_output` that should be used to
+#'   generate the plot. This input is required for the following checks:
+#'   - `Single Site, Exploratory, Cross-Sectional`
+#'   - `Multi-Site, Exploratory, Cross-Sectional`
+#'   - `Single Site, Anomaly Detection, Cross-Sectional`
+#'   - `Single Site, Exploratory Longitudinal`
+#'   - `Multi Site Exploratory Longitudinal`
+#'
+#' @param date_breaks_str *string* || defaults to `1 year`
+#'
+#'   A string that controls the time period division on the x-axis ('1 year', '3 months', etc).
+#'   This parameter is only required for the `Single Site, Exploratory, Longitudinal` check.
+#'
+#' @param domain_filter *string* || defaults to `NULL`
+#'
+#'   A string indicating the domain of interest for plotting. This parameter
+#'   is required for the following checks:
+#'   - `Single Site, Anomaly Detection, Longitudinal`
+#'   - `Multi-Site, Anomaly Detection, Longitudinal`
+#'
+#' @param visit_filter *string* || defaults to `NULL`
+#'
+#'   A string indicating the visit type of interest for plotting. This parameter
+#'   is required for the following checks:
+#'   - `Multi-Site, Anomaly Detection, Cross-Sectional`
+#'   - `Single Site, Anomaly Detection, Longitudinal`
+#'   - `Multi-Site, Anomaly Detection, Longitudinal`
+#'
+#' @param large_n *boolean* || defaults to `FALSE`
+#'
+#'   For Multi-Site analyses, a boolean indicating whether the large N
+#'   visualization, intended for a high volume of sites, should be used. This
+#'   visualization will produce high level summaries across all sites, with an
+#'   option to add specific site comparators via the `large_n_sites` parameter.
+#'
+#' @param large_n_sites *vector* || defaults to `NULL`
+#'
+#'   When `large_n = TRUE`, a vector of site names that can add site-level information
+#'   to the plot for comparison across the high level summary information.
+#'
+#' @return This function will produce a graph to visualize the results
+#'         from `pf_process` based on the parameters provided. The default
+#'         output is typically a static ggplot or gt object, but interactive
+#'         elements can be activated by passing the plot through `make_interactive_squba`.
+#'         For a more detailed description of output specific to each check type,
+#'         see the PEDSpace metadata repository
 #'
 #' @example inst/example-pf_process_output.R
 #'
@@ -26,7 +67,7 @@
 #'
 
 pf_output <- function(process_output,
-                      output,
+                      output = NULL,
                       #facet = NULL,
                       date_breaks_str = '1 year',
                       domain_filter = NULL,

@@ -107,7 +107,7 @@ pf_process_omop <- function(cohort = cohort,
 
     grouped_list <- grouped_list[! grouped_list %in% 'fu']
 
-    pf_int <- compute_fot(cohort = cohort_prep,
+    pf_tbl <- compute_fot(cohort = cohort_prep,
                             site_col = site_col,
                             reduce_id = 'visit_type',
                             time_period = time_period,
@@ -130,6 +130,36 @@ pf_process_omop <- function(cohort = cohort,
                                                   grouped_list=grouped_list,
                                                   domain_tbl=domain_tbl)
                             })
+
+    new_group <- grouped_list[! grouped_list %in% c('person_id')]
+
+    if (!class(config("db_src")) %in% "PqConnection") {
+      pf_int <-
+        pf_tbl %>% group_by(
+          !!! syms(new_group),
+          pt_ct_denom,
+          pts_w_visit,
+          visit_type
+        ) %>% group_by(domain, .add = TRUE) %>%
+        mutate(pts_w_fact=n(),
+               sum_fact_ct=sum(total_strat_ct),
+               median_fact_ct=median(total_strat_ct)) %>%
+        select(group_cols(), pts_w_fact, sum_fact_ct, median_fact_ct) %>%
+        distinct() %>%
+        ungroup()
+    }else{
+      pf_int <-
+        pf_tbl %>% group_by(
+          !!! syms(new_group),
+          pt_ct_denom,
+          pts_w_visit,
+          visit_type
+        ) %>% group_by(domain, .add = TRUE) %>%
+        summarise(pts_w_fact=n(),
+                  sum_fact_ct=sum(total_strat_ct),
+                  median_fact_ct=median(total_strat_ct)) %>%
+        ungroup()
+    }
 
   } else {
     pf_tbl <- loop_through_visits(
@@ -211,8 +241,13 @@ pf_process_omop <- function(cohort = cohort,
   # Output results
   if(patient_level_tbl){
 
-    output <- list('pf_summary_results' = pf_final %>% replace_site_col(),
-                   'pf_patient_level_results' = pf_int %>% replace_site_col())
+    if(time){
+      output <- list('pf_summary_results' = pf_final %>% replace_site_col(),
+                     'pf_patient_level_results' = pf_tbl %>% replace_site_col())
+    }else{
+      output <- list('pf_summary_results' = pf_final %>% replace_site_col(),
+                     'pf_patient_level_results' = pf_int %>% replace_site_col())
+    }
 
     return(output)
 

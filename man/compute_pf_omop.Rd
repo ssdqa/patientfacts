@@ -26,3 +26,4 @@ patient in the cohort
 Compute patient facts per year of cohort follow up for each domain
 defined in the domain_tbl
 }
+\keyword{internal}

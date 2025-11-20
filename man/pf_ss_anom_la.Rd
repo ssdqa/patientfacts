@@ -27,3 +27,4 @@ is returned with outliers marked with orange dots
 \description{
 \strong{Single Site, Anomaly, Longitudinal}
 }
+\keyword{internal}

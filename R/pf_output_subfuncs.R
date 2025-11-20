@@ -29,6 +29,8 @@ NULL
 #'         conducted and outliers are marked with red dots. the graphs representing
 #'         the data removed in the regression are also returned
 #'
+#' @keywords internal
+#'
 pf_ss_anom_la <- function(data_tbl,
                           facet,
                           visit_filter,
@@ -114,6 +116,8 @@ pf_ss_anom_la <- function(data_tbl,
 #' @return a dot and line chart displaying the `output` variable of interest per
 #'         domain across the user specified time period
 #'
+#' @keywords internal
+#'
 
 pf_ss_exp_la <- function(data_tbl,
                          output,
@@ -168,6 +172,8 @@ pf_ss_exp_la <- function(data_tbl,
 #'    domain across time computation with the Euclidean distance associated with each line
 #'    3) a bar graph with the Euclidean distance value for each site, with the average
 #'    proportion as the fill
+#'
+#' @keywords internal
 #'
 pf_ms_anom_la <- function(process_output,
                           domain_filter,
@@ -335,6 +341,8 @@ pf_ms_anom_la <- function(process_output,
 #' @return line graph representing the output variable of interest across time
 #'         for each of the sites of interest; each site is represented by one line
 #'
+#' @keywords internal
+#'
 pf_ms_exp_la <- function(data_tbl,
                          output,
                          facet = NULL,
@@ -429,6 +437,8 @@ pf_ms_exp_la <- function(data_tbl,
 #'         patients falling +/- 2 standard deviations away from the mean facts
 #'         per follow-up for a given domain
 #'
+#' @keywords internal
+#'
 pf_ss_anom_cs <- function(data_tbl,
                           output,
                           facet=c('visit_type')){
@@ -486,6 +496,8 @@ pf_ss_anom_cs <- function(data_tbl,
 #' @return a bar graph displaying the median facts per follow-up for each domain
 #'         and visit_type
 #'
+#' @keywords internal
+#'
 pf_ss_exp_cs <- function(data_tbl,
                          output,
                          facet) {
@@ -538,6 +550,8 @@ pf_ss_exp_cs <- function(data_tbl,
 #'         if no groups were eligible for anomaly detection analysis, a heatmap summarizing
 #'         the proportion of patients for a given domain & site and a dot plot summarizing
 #'         the average standard deviation for each site are returned as an alternative
+#'
+#' @keywords internal
 #'
 pf_ms_anom_cs <- function(data_tbl,
                           facet = NULL,
@@ -770,6 +784,8 @@ pf_ms_anom_cs <- function(data_tbl,
 #'
 #' @return a dot plot displaying the median facts per follow up for each domain
 #'         and site compared to the all-site median (star icon)
+#'
+#' @keywords internal
 #'
 
 pf_ms_exp_cs <- function(data_tbl,

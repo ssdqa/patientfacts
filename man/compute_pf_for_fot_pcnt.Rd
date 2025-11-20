@@ -26,3 +26,4 @@ for each patient in the cohort
 Compute facts per patient for each time_period within a user-defined
 time span
 }
+\keyword{internal}

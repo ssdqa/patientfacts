@@ -13,6 +13,8 @@
 #'         the visit type of interest summarizing the facts per year of follow up for each
 #'         patient in the cohort
 #'
+#' @keywords internal
+#'
 compute_pf_pcnt <- function(cohort,
                             pf_input_tbl,
                             grouped_list,
@@ -106,6 +108,8 @@ compute_pf_pcnt <- function(cohort,
 #'         the visit type of interest summarizing the facts for each time period within the time span
 #'         for each patient in the cohort
 #'
+#' @keywords internal
+#'
 compute_pf_for_fot_pcnt <- function(cohort,
                                     pf_input_tbl,
                                     grouped_list,
@@ -166,7 +170,7 @@ compute_pf_for_fot_pcnt <- function(cohort,
       ) %>% summarise(total_strat_ct=n()) %>%
       mutate(domain=domain_name) %>% ungroup()
 
-    new_group <- grouped_list[! grouped_list %in% c('patid')]
+    # new_group <- grouped_list[! grouped_list %in% c('patid')]
 
     pf_cohort_final <-
       pf %>% right_join(select(cohort,
@@ -177,31 +181,31 @@ compute_pf_for_fot_pcnt <- function(cohort,
       pf_input_tbl %>% summarise(ct=n_distinct(patid)) %>%
       pull()
 
-    if (!class(config("db_src")) %in% "PqConnection") {
-      pf_final <-
-        pf %>% group_by(
-          !!! syms(new_group)
-        ) %>% group_by(domain, .add = TRUE) %>%
-        mutate(pts_w_fact=n(),
-               sum_fact_ct=sum(total_strat_ct),
-               median_fact_ct=median(total_strat_ct)) %>%
-        select(group_cols(), pts_w_fact, sum_fact_ct, median_fact_ct) %>%
-        distinct() %>%
-        ungroup()
-    }else{
-      pf_final <-
-        pf %>% group_by(
-          !!! syms(new_group)
-        ) %>% group_by(domain, .add = TRUE) %>%
-        summarise(pts_w_fact=n(),
-                  sum_fact_ct=sum(total_strat_ct),
-                  median_fact_ct=median(total_strat_ct)) %>%
-        ungroup()
-    }
+    # if (!class(config("db_src")) %in% "PqConnection") {
+    #   pf_final <-
+    #     pf %>% group_by(
+    #       !!! syms(new_group)
+    #     ) %>% group_by(domain, .add = TRUE) %>%
+    #     mutate(pts_w_fact=n(),
+    #            sum_fact_ct=sum(total_strat_ct),
+    #            median_fact_ct=median(total_strat_ct)) %>%
+    #     select(group_cols(), pts_w_fact, sum_fact_ct, median_fact_ct) %>%
+    #     distinct() %>%
+    #     ungroup()
+    # }else{
+    #   pf_final <-
+    #     pf %>% group_by(
+    #       !!! syms(new_group)
+    #     ) %>% group_by(domain, .add = TRUE) %>%
+    #     summarise(pts_w_fact=n(),
+    #               sum_fact_ct=sum(total_strat_ct),
+    #               median_fact_ct=median(total_strat_ct)) %>%
+    #     ungroup()
+    # }
 
 
     finalized <-
-      pf_final %>%
+      pf %>%
       mutate(pt_ct_denom=pf_cohort_final,
              pts_w_visit=site_visit_ct_num) %>% collect()
 
