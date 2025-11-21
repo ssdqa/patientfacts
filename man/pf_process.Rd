@@ -154,11 +154,14 @@ conn <- mk_testdb_omop()
 
 #' Establish connection to database and generate internal configurations
 initialize_dq_session(session_name = 'pf_process_test',
-                      working_directory = getwd(),
+                      working_directory = my_directory,
                       db_conn = conn,
                       is_json = FALSE,
-                      file_subdirectory = 'extdata',
+                      file_subdirectory = my_file_folder,
                       cdm_schema = NA)
+
+## turn of SQL trace for example
+config('db_trace', FALSE)
 
 #' Build mock study cohort
 cohort <- cdm_tbl('person') \%>\% dplyr::distinct(person_id) \%>\%
@@ -179,7 +182,8 @@ pf_process_example <- pf_process(cohort = cohort,
                                  omop_or_pcornet = 'omop',
                                  visit_types = c('all'),
                                  domain_tbl = patientfacts::pf_domain_file \%>\%
-                                   dplyr::filter(domain == 'diagnoses'))
+                                   dplyr::filter(domain == 'diagnoses')) \%>\%
+  suppressMessages()
 
 pf_process_example
 
@@ -189,6 +193,7 @@ pf_process_example
 #' The 0s are a limitation of the small sample data set used for this example
 pf_output_example <- pf_output(process_output = pf_process_example \%>\%
                                  dplyr::mutate(median_site_without0s = 4),
+                                 ## tweak synthetic output for example
                                output = 'median_site_without0s')
 
 pf_output_example
