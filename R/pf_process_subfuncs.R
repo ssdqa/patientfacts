@@ -15,6 +15,8 @@
 #' @importFrom stringr str_remove
 #' @importFrom tidyr pivot_longer
 #'
+#' @keywords internal
+#'
 combine_study_facts <- function(pf_tbl,
                                 study_abbr,
                                 domain_list,
@@ -96,6 +98,8 @@ combine_study_facts <- function(pf_tbl,
 #'
 #' @importFrom stats median
 #'
+#' @keywords internal
+#'
 compute_pf_medians <- function(data_input,
                                site_col,
                                agegrp=NULL
@@ -175,6 +179,8 @@ compute_pf_medians <- function(data_input,
 #'                           zscore_site_fact, outlier_site_fact, prop_outlier_site_fact
 #'
 #' @importFrom stats sd
+#'
+#' @keywords internal
 #'
 compute_dist_mean_pf <- function(data_input,
                                  site_col,
