@@ -1,0 +1,40 @@
+# Patient Facts
+
+The completeness-focused checks in the Patient Facts module assess the
+availability of patient clinical data. The number of clinical events per
+year of follow-up for each patient in a cohort is computed and
+stratified by visit type in order to help investigators evaluate
+utilization patterns across the cohort.
+
+## Installation
+
+You can install the development version of this package like so:
+
+``` r
+devtools::install_github('ssdqa/patientfacts')
+```
+
+# Package index
+
+## Module Execution
+
+- [`pf_process()`](https://ssdqa.github.io/patientfacts/reference/pf_process.md)
+  : Patient Facts
+- [`pf_output()`](https://ssdqa.github.io/patientfacts/reference/pf_output.md)
+  : Patient Facts – Output Generation
+
+## Sample Input
+
+- [`pf_domain_file`](https://ssdqa.github.io/patientfacts/reference/pf_domain_file.md)
+  : Patient Facts Domain File Sample
+- [`pf_visit_file_omop`](https://ssdqa.github.io/patientfacts/reference/pf_visit_file_omop.md)
+  : Patient Facts Visit File Sample – OMOP version
+- [`pf_visit_file_pcornet`](https://ssdqa.github.io/patientfacts/reference/pf_visit_file_pcornet.md)
+  : Patient Facts Visit File Sample – PCORnet version
+
+# Articles
+
+### All vignettes
+
+- [Multi-Site Analysis for Independent Data
+  Sources](https://ssdqa.github.io/patientfacts/articles/multisite_independent.md):
