@@ -61,10 +61,10 @@ my_combined_results <- my_table1 %>% dplyr::union(my_table2) ... %>%
   dplyr::mutate(output_function = 'pf_ms_exp_cs')
 
 my_final_results <- 
-  compute_pf_medians(data_input = my_combined_results,
-                     site_col = 'site',
-                     agegrp = age_groups # (as provided in pf_process)
-                    )
+  patientfacts:::compute_pf_medians(data_input = my_combined_results,
+                                    site_col = 'site',
+                                    agegrp = age_groups # (as provided in pf_process)
+                                    )
 ```
 
 ### Longitudinal
@@ -100,8 +100,9 @@ results**. This is required for this anomaly detection process as it is
 not possible to back-compute from the standard aggregated results.
 
 Once a combined table of patient-level results from each data source has
-been created, execute the code below to run the anomaly detection
-analysis. The `p_value` can be selected by the user.
+been created, execute the code below (using functions from the
+`squba.gen` package) to run the anomaly detection analysis. The
+`p_value` can be selected by the user.
 
 ``` r
 my_summary_table <- my_combo_results %>% 

@@ -144,10 +144,10 @@ together and pass them through the functions below.</p>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">output_function =</span> <span class="st">'pf_ms_exp_cs'</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>my_final_results <span class="ot">&lt;-</span> </span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="fu">compute_pf_medians</span>(<span class="at">data_input =</span> my_combined_results,</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>                     <span class="at">site_col =</span> <span class="st">'site'</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>                     <span class="at">agegrp =</span> age_groups <span class="co"># (as provided in pf_process)</span></span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>                    )</span></code></pre></div>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  patientfacts<span class="sc">:::</span><span class="fu">compute_pf_medians</span>(<span class="at">data_input =</span> my_combined_results,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>                                    <span class="at">site_col =</span> <span class="st">'site'</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>                                    <span class="at">agegrp =</span> age_groups <span class="co"># (as provided in pf_process)</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>                                    )</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="longitudinal">Longitudinal<a class="anchor" aria-label="anchor" href="#longitudinal"></a>
@@ -183,8 +183,9 @@ still available for the longitudinal analysis if needed.</p>
 anomaly detection process as it is not possible to back-compute from the
 standard aggregated results.</p>
 <p>Once a combined table of patient-level results from each data source
-has been created, execute the code below to run the anomaly detection
-analysis. The <code>p_value</code> can be selected by the user.</p>
+has been created, execute the code below (using functions from the
+<code>squba.gen</code> package) to run the anomaly detection analysis.
+The <code>p_value</code> can be selected by the user.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_summary_table</span> <span class="op">&lt;-</span> <span class="va">my_combo_results</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">site</span>, <span class="va">visit_type</span>, <span class="va">domain</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
