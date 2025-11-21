@@ -36,3 +36,4 @@ the mean both at visit_type + domain and site, visit_type, + domain levels
 Compute distance from mean to identify patients with an anomalous number of facts per year
 of follow up
 }
+\keyword{internal}

@@ -28,3 +28,4 @@ study. The medians are compute both with patients who do not have evidence of th
 \description{
 Compute median fact counts by visit & domain and by site, visit, & domain
 }
+\keyword{internal}

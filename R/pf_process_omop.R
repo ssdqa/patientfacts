@@ -56,6 +56,7 @@
 #' @return a dataframe with summary results (i.e. medians) that can be used as the input for `pf_output` to generate graphical output
 #' @return if `patient_level_tbl = TRUE`, an additional dataframe is returned in a list format with patient level output
 #'
+#' @keywords internal
 #'
 
 pf_process_omop <- function(cohort = cohort,

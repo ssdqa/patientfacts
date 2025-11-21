@@ -103,3 +103,4 @@ Results can optionally be stratified by site, age group, visit type, and/or time
 \details{
 This version of the function is compatible with the PCORnet CDM.
 }
+\keyword{internal}
