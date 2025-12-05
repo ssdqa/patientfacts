@@ -123,7 +123,6 @@ pf_process_pcornet <- function(cohort = cohort,
                                                     visit_type_tbl=visit_type_table,
                                                     site_list=site_list_adj,
                                                     visit_list=visit_types,
-                                                    grouped_list=grouped_list,
                                                     domain_tbl=domain_tbl)
                           })
 
@@ -172,7 +171,6 @@ pf_process_pcornet <- function(cohort = cohort,
       site_list=site_list_adj,
       visit_list=visit_types,
       visit_type_tbl=visit_type_table,
-      grouped_list=grouped_list,
       domain_tbl = domain_tbl
     )
 
