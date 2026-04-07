@@ -194,24 +194,62 @@ compute_dist_mean_pf <- function(data_input,
   # if(is.data.frame(codeset)) {data_input <- data_input %>% group_by(flag,.add=TRUE) %>%
   #   mutate(flag = ifelse(is.na(flag), 'None', flag))}
 
-  site_dist_means_tot <-
-    data_input %>%
+  all_vals <- data_input %>%
     group_by(study,
              !!sym(site_col),
              visit_type,
              domain,
              .add=TRUE) %>%
-    summarise(n_tot=n(),
-              mean_tot=mean(var_val),
+    summarise(mean_tot=mean(var_val),
               sd_tot=sd(var_val),
-              zscore_tot = ((var_val - mean_tot) / sd_tot),
-              abs_z = abs(zscore_tot),
-              outlier = case_when(abs_z > n_sd ~ 1L,
-                                  TRUE ~ 0L),
-              outlier_tot = sum(outlier),
-              prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
+              n_tot=n())
+
+  site_dist_means_tot <- data_input %>%
+    left_join(all_vals) %>%
+    group_by(study,
+             !!sym(site_col),
+             visit_type,
+             domain,
+             .add=TRUE) %>%
+    mutate(zscore_tot = ((var_val - mean_tot) / sd_tot),
+           abs_z = abs(zscore_tot),
+           outlier = case_when(zscore_tot > n_sd ~ 1L,
+                               TRUE ~ 0L)) %>%
+    group_by(n_tot, sd_tot, mean_tot, .add = TRUE) %>%
+    mutate(outlier_tot = sum(outlier),
+           prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
     select(group_vars(.), n_tot, outlier_tot, mean_tot, sd_tot, prop_outlier_tot) %>%
     ungroup() %>% distinct()
+
+  # site_dist_means_tot <-
+  #   data_input %>%
+  #   group_by(study,
+  #            !!sym(site_col),
+  #            visit_type,
+  #            domain,
+  #            .add=TRUE) %>%
+  #   summarise(n_tot=n(),
+  #             mean_tot=mean(var_val, na.rm = TRUE),
+  #             sd_tot=sd(var_val, na.rm = TRUE),
+  #             zscore_tot = ((var_val - mean_tot) / sd_tot),
+  #             abs_z = abs(zscore_tot),
+  #             outlier = case_when(abs_z > n_sd ~ 1L,
+  #                                 TRUE ~ 0L),
+  #             outlier_tot = sum(outlier),
+  #             prop_outlier_tot = round(outlier_tot / n_tot, 3)) %>%
+  #   select(group_vars(.), n_tot, outlier_tot, mean_tot, sd_tot, prop_outlier_tot) %>%
+  #   ungroup() %>% distinct()
+
+ fact_vals <- data_input %>%
+    filter(var_ever == 1) %>%
+    group_by(study,
+             !!sym(site_col),
+             visit_type,
+             domain,
+             .add=TRUE) %>%
+    summarise(mean_fact=mean(var_val),
+              sd_fact=sd(var_val),
+              n_w_fact=n())
 
 
   site_dist_means_fact <-
@@ -222,21 +260,19 @@ compute_dist_mean_pf <- function(data_input,
              visit_type,
              domain,
              .add=TRUE) %>%
-    summarise(n_w_fact=n(),
-              mean_fact=mean(var_val),
-              sd_fact=sd(var_val),
-              zscore_fact = ((var_val - mean_fact) / sd_fact),
-              abs_z = abs(zscore_fact),
-              outlier = case_when(abs_z > n_sd ~ 1L,
-                                  TRUE ~ 0L),
-              outlier_fact = sum(outlier),
-              prop_outlier_fact = round(outlier_fact / n_w_fact, 3)) %>%
-    ungroup() %>%
-    select(-c(outlier, abs_z, zscore_fact)) %>% distinct() %>%
+    left_join(fact_vals) %>%
+    mutate(zscore_fact = ((var_val - mean_fact) / sd_fact),
+           abs_z = abs(zscore_fact),
+           outlier = case_when(abs_z > n_sd ~ 1L, TRUE ~ 0L)) %>%
+    group_by(n_w_fact, sd_fact, mean_fact, .add = TRUE) %>%
+    mutate(outlier_fact = sum(outlier),
+           prop_outlier_fact = round(outlier_fact / n_w_fact, 3)) %>%
+    select(group_vars(.), n_w_fact, outlier_fact, mean_fact, sd_fact, prop_outlier_fact) %>%
+    ungroup() %>% distinct() %>%
     left_join(site_dist_means_tot)
 
   site_dist_means_final <-
-    site_dist_means_fact %>% replace(is.na(.), 0)
+    site_dist_means_fact %>% replace(is.na(.), 0) %>% ungroup()
 
   site_dist_means_final
 }

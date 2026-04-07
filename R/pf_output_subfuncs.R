@@ -800,21 +800,24 @@ pf_ms_exp_cs <- function(data_tbl,
     y_title='Median Facts / Follow-Up for All Patients Across Sites'
     ln_title='All Site Median Facts / Follow-Up for All Patients'
     comp_var = 'median_all_with0s'
+    comp_n = 'n_tot'
   }else if(output=='median_site_without0s'){
     y_title='Median Facts / Follow-Up for Patients with Fact Across Sites'
     ln_title='All Site Median Facts / Follow-Up for Patients with Fact'
     comp_var = 'median_all_without0s'
+    comp_n = 'n_w_fact'
   }else(cli::cli_abort('Please select a valid output: {.code median_site_with0s} or {.code median_site_without0s}'))
 
   facet <- facet %>% append('visit_type') %>% unique()
 
   data_format <- data_tbl %>%
     mutate(n_w_fact = format(n_w_fact, big.mark = ',', scientific = FALSE),
-           site_lab = paste0(site, ' \n(No. of Patients = ', n_w_fact, ')'))
+           n_tot = format(n_tot, big.mark = ',', scientific = FALSE),
+           site_lab = paste0(site, ' \n(No. of Patients = ', !!sym(comp_n), ')'))
   if(!large_n){
     r <- ggplot(data_format,
                 aes(x=domain,y=!! sym(output), colour=site))+
-      geom_point_interactive(aes(data_id=.data$site_lab, tooltip = .data$site_lab), size=3)+
+      geom_point_interactive(aes(data_id=.data$site, tooltip = .data$site_lab), size=3)+
       geom_point(aes(x=domain, y=!! sym(comp_var)), shape=8, size=3, color="black")+
       scale_color_squba() +
       facet_wrap((facet), scales="free_x", ncol=2)+
@@ -827,7 +830,7 @@ pf_ms_exp_cs <- function(data_tbl,
       r <- ggplot(data_format %>% filter(site %in% large_n_sites),
                   aes(x=domain,y=!! sym(output))) +
         geom_col(aes(x=domain, y=!! sym(comp_var)), fill="gray")+
-        geom_point_interactive(aes(data_id=.data$site_lab, tooltip = .data$site_lab, colour=site), size=3)+
+        geom_point_interactive(aes(data_id=.data$site, tooltip = .data$site_lab, colour=site), size=3)+
         scale_color_squba() +
         facet_wrap((facet), scales="free_x", ncol=2)+
         theme_minimal() +

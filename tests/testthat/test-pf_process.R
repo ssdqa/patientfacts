@@ -96,6 +96,8 @@ test_that('pf ss anom nt -- omop', {
                              multi_or_single_site = 'single',
                              anomaly_or_exploratory = 'anomaly',
                              omop_or_pcornet = 'omop',
+                             visit_type_table = patientfacts::pf_visit_file_omop %>%
+                               filter(visit_type == 'outpatient'),
                              domain_tbl = patientfacts::pf_domain_file %>%
                                filter(domain == 'diagnoses')))
 })
