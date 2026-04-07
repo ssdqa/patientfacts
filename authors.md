@@ -17,14 +17,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/ssdqa/patientfacts/blob/main/DESCRIPTION)
 
-Razzaghi H, Wieand K, Dickinson K, Bailey C (2025). *patientfacts:
+Razzaghi H, Wieand K, Dickinson K, Bailey C (2026). *patientfacts:
 Assess Patient Data Availability*. R package version 0.0.0.9000,
 <https://github.com/ssdqa/patientfacts>.
 
     @Manual{,
       title = {patientfacts: Assess Patient Data Availability},
       author = {Hanieh Razzaghi and Kaleigh Wieand and Kimberley Dickinson and Charles Bailey},
-      year = {2025},
+      year = {2026},
       note = {R package version 0.0.0.9000},
       url = {https://github.com/ssdqa/patientfacts},
     }
