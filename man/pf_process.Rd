@@ -16,6 +16,7 @@ pf_process(
   p_value = 0.9,
   age_groups = NULL,
   patient_level_tbl = FALSE,
+  compute_skew = FALSE,
   visit_types = c("outpatient", "inpatient"),
   domain_tbl = patientfacts::pf_domain_file,
   visit_tbl = cdm_tbl("visit_occurrence"),
@@ -100,6 +101,17 @@ A boolean indicating whether an additional table with patient level results shou
 
 If \code{TRUE}, the output of this function will be a list containing both the summary and patient level
 output. Otherwise, this function will just output the summary dataframe}
+
+\item{compute_skew}{\emph{boolean} || defaults to \code{FALSE}
+
+A boolean indicating whether skew metrics (skewness and Pearson's skew) should be
+computed in addition to the standard summary metrics. Setting this to \code{TRUE} will
+compute skew metrics for distributions with & without patients with no facts,
+and additional metrics will be computed for a trimmed distribution (removing the
+top and bottom 2.5\%) to help the user assess whether outliers are heavily contributing
+to their findings.
+
+This setting will only apply to exploratory, cross-sectional analyses.}
 
 \item{visit_types}{\emph{string or vector} || defaults to \code{c('outpatient', 'inpatient')}
 

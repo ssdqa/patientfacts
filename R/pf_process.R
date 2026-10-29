@@ -81,6 +81,17 @@
 #'   If `TRUE`, the output of this function will be a list containing both the summary and patient level
 #'   output. Otherwise, this function will just output the summary dataframe
 #'
+#' @param compute_skew *boolean* || defaults to `FALSE`
+#'
+#'   A boolean indicating whether skew metrics (skewness and Pearson's skew) should be
+#'   computed in addition to the standard summary metrics. Setting this to `TRUE` will
+#'   compute skew metrics for distributions with & without patients with no facts,
+#'   and additional metrics will be computed for a trimmed distribution (removing the
+#'   top and bottom 2.5%) to help the user assess whether outliers are heavily contributing
+#'   to their findings.
+#'
+#'   This setting will only apply to exploratory, cross-sectional analyses.
+#'
 #' @param visit_types *string or vector* || defaults to `c('outpatient', 'inpatient')`
 #'
 #'   A string or vector of visit types by which the output should be stratified. Each
@@ -135,6 +146,7 @@ pf_process<- function(cohort = cohort,
                       p_value = 0.9,
                       age_groups = NULL,
                       patient_level_tbl = FALSE,
+                      compute_skew = FALSE,
                       visit_types = c('outpatient','inpatient'),
                       domain_tbl=patientfacts::pf_domain_file,
                       visit_tbl=cdm_tbl("visit_occurrence"),

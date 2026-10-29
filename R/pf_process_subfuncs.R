@@ -276,3 +276,116 @@ compute_dist_mean_pf <- function(data_input,
 
   site_dist_means_final
 }
+
+
+
+#' Compute skewness & Pearson's skew
+#'
+#' @param patient_facts_output the patient-level output produced by pf_process
+#' @param val_col the column with the value that should be used as the metric for computing skew
+#'
+#' @returns a summary table with the site, visit type, & domain and their associated
+#' skew metrics for the full distribution and a trimmed (top & bottom 2.5% removed)
+#' distribution
+#'
+#' @keywords internal
+#'
+compute_skew_metrics <- function(patient_facts_output,
+                                 val_col = 'var_val') {
+
+  compute_skew <- function(x) {
+    x <- x[!is.na(x)]
+    n <- length(x)
+    m <- mean(x)
+    s <- sd(x)
+
+    skewness <- (sum((x - m)^3) / n) / s^3
+
+    return(skewness)
+  }
+
+  ### With 0s
+  thrs_w0 <- patient_facts_output %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(top_lv = stats::quantile(!!sym(val_col), 0.975),
+              low_lv = stats::quantile(!!sym(val_col), 0.025))
+
+  #### ALL
+  w_zeros <- patient_facts_output %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(
+      mean_w0 = mean(!!sym(val_col)),
+      median_w0 = median(!!sym(val_col)),
+      sd_w0 = sd(!!sym(val_col)),
+      skewness_w0 = compute_skew(!!sym(val_col)),
+      mean_med_diff_w0 = mean_w0 - median_w0,
+      pearsons_w0 = (3 * mean_med_diff_w0) / sd_w0,
+      .groups = "drop"
+    ) %>%
+    select(-c(mean_w0, median_w0, sd_w0, mean_med_diff_w0))
+
+  #### TRIMMED
+  w_zeros_trim <- patient_facts_output %>%
+    left_join(thrs_w0) %>%
+    filter(!!sym(val_col) >= low_lv & !!sym(val_col) <= top_lv) %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(
+      mean_w0 = mean(!!sym(val_col)),
+      median_w0 = median(!!sym(val_col)),
+      sd_w0 = sd(!!sym(val_col)),
+      skewness_w0_trim = compute_skew(!!sym(val_col)),
+      mean_med_diff_w0 = mean_w0 - median_w0,
+      pearsons_w0_trim = (3 * mean_med_diff_w0) / sd_w0,
+      .groups = "drop"
+    ) %>%
+    select(-c(mean_w0, median_w0, sd_w0, mean_med_diff_w0))
+
+  ### Without 0s
+  thrs_no0 <- patient_facts_output %>%
+    filter(var_ever == 1) %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(top_lv = stats::quantile(!!sym(val_col), 0.975),
+              low_lv = stats::quantile(!!sym(val_col), 0.025))
+
+  #### ALL
+  wo_zeros <- patient_facts_output %>%
+    filter(var_ever == 1) %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(
+      mean_no0 = mean(!!sym(val_col)),
+      median_no0 = median(!!sym(val_col)),
+      sd_no0 = sd(!!sym(val_col)),
+      skewness_no0 = compute_skew(!!sym(val_col)),
+      mean_med_diff_no0 = mean_no0 - median_no0,
+      pearsons_no0 = (3 * mean_med_diff_no0) / sd_no0,
+      .groups = "drop"
+    ) %>%
+    select(-c(mean_no0, median_no0, sd_no0, mean_med_diff_no0))
+
+  #### TRIMMED
+  wo_zeros_trim <- patient_facts_output %>%
+    filter(var_ever == 1) %>%
+    left_join(thrs_no0) %>%
+    filter(!!sym(val_col) >= low_lv & !!sym(val_col) <= top_lv) %>%
+    group_by(site, visit_type, domain) %>%
+    summarise(
+      mean_no0 = mean(!!sym(val_col)),
+      median_no0 = median(!!sym(val_col)),
+      sd_no0 = sd(!!sym(val_col)),
+      skewness_no0_trim = compute_skew(!!sym(val_col))$skewness,
+      mean_med_diff_no0 = mean_no0 - median_no0,
+      pearsons_no0_trim = (3 * mean_med_diff_no0) / sd_no0,
+      .groups = "drop"
+    ) %>%
+    select(-c(mean_no0, median_no0, sd_no0, mean_med_diff_no0))
+
+  skew_tbl <- w_zeros %>%
+    left_join(wo_zeros) %>% mutate(cohort = 'full')
+
+  skew_tbl_trim <- w_zeros_trim %>%
+    left_join(wo_zeros_trim) %>% mutate(cohort = 'trimmed extremes')
+
+  return(skew_tbl %>% union(skew_tbl_trim))
+}
+
+

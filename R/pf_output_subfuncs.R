@@ -11,6 +11,7 @@
 #' @importFrom plotly layout
 #' @importFrom graphics text
 #' @importFrom patchwork plot_layout
+#' @importFrom rlang :=
 #'
 NULL
 
@@ -527,6 +528,28 @@ pf_ss_exp_cs <- function(data_tbl,
   plt[["metadata"]] <- tibble('pkg_backend' = 'plotly',
                               'tooltip' = FALSE)
 
+  if(any(grepl('skew',colnames(data_tbl)))){
+    if(output=='median_site_with0s'){
+      suff <- 'w0'
+      tit <- 'Skew for All Patients'
+    }else{
+      suff <- 'no0'
+      tit <- 'Skew for Patients with Fact'
+    }
+
+    skew_tbl <- data_tbl %>%
+      select(visit_type, domain, contains(suff)) %>%
+      gt(groupname_col = 'domain',
+         rowname_col = 'visit_type') %>%
+      cols_label(!!paste0('skewness_', suff) := 'Skewness',
+                 !!paste0('skewness_', suff, '_trim') := 'Skewness (Trimmed)',
+                 !!paste0('pearsons_', suff) := "Pearson's",
+                 !!paste0('pearsons_', suff, '_trim') := "Pearson's (Trimmed)") %>%
+      tab_footnote("`Trimmed` indicates the top & bottom 2.5% of the distribution were removed and skew was recomputed",
+                   locations = cells_column_labels(columns = contains('Trimmed'))) %>%
+      tab_header(title = tit)
+  }
+
   return(plt)
 
 }
@@ -825,6 +848,31 @@ pf_ms_exp_cs <- function(data_tbl,
       labs(y = y_title,
            x = 'Domain') +
       coord_flip()
+
+    if(any(grepl('skew',colnames(data_tbl)))){
+      if(output=='median_site_with0s'){
+        suff <- 'w0'
+        tit <- 'Skew for All Patients'
+      }else{
+        suff <- 'no0'
+        tit <- 'Skew for Patients with Fact'
+      }
+
+      skew_tbl <- data_tbl %>%
+        mutate(visit_domain = paste0(visit_type, ' ', domain)) %>%
+        select(site, visit_domain, contains(suff)) %>%
+        rename('Skewness' := !!paste0('skewness_', suff) ,
+               'Skewness (Trimmed)*' := !!paste0('skewness_', suff, '_trim'),
+               "Pearson's" = !!paste0('pearsons_', suff),
+               "Pearson's (Trimmed)*" := !!paste0('pearsons_', suff, '_trim')) %>%
+        pivot_longer(cols = !c(site, visit_domain)) %>%
+        pivot_wider(names_from = site,
+                    values_from = value) %>%
+        gt(groupname_col = 'visit_domain',
+           rowname_col = 'name') %>%
+        tab_footnote("*`Trimmed` indicates the top & bottom 2.5% of the distribution were removed and skew was recomputed") %>%
+        tab_header(title = tit)
+    }
   }else{
     if(!is.null(large_n_sites)){
       r <- ggplot(data_format %>% filter(site %in% large_n_sites),

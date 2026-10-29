@@ -17,6 +17,7 @@
 #' @param patient_level_tbl logical indicating whether an additional table with patient level results should be output;
 #'                          if TRUE, the output of this function will be a list containing both the summary and patient level
 #'                          output. Otherwise, this function will just output the summary dataframe
+#' @param compute_skew a boolean indicating whether or not skew metrics (skewness & Pearson's skew) should be computed and added to the results
 #' @param visit_types A list of visit types by which the output should be stratified. Options for visit types can be found or adjusted
 #'                    in the provided `pf_visit_file_(omop/pcornet)` file. If you would not like to stratify your results by visit type, please
 #'                    set the visit_types argument equal to `all`
@@ -62,6 +63,7 @@
 pf_process_omop <- function(cohort = cohort,
                             study_name = 'my_study',
                             patient_level_tbl = FALSE,
+                            compute_skew = FALSE,
                             visit_types = c('outpatient','inpatient'),
                             multi_or_single_site = 'single',
                             time = FALSE,
@@ -238,6 +240,19 @@ pf_process_omop <- function(cohort = cohort,
     }
 
   # Output results
+  if(compute_skew){
+    if(time || anomaly_or_exploratory == 'anomaly'){
+      cli::cli_warn('Skew computations are only available for exploratory, cross-sectional analyses')
+    }else{
+      skew_tbl <- compute_skew_metrics(patient_facts_output = pf_int %>%
+                                         replace_site_col(),
+                                       val_col = 'var_val')
+
+      pf_final <- pf_final %>%
+        left_join(skew_tbl)
+    }
+  }
+
   if(patient_level_tbl){
 
     if(time){

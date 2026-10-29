@@ -26,4 +26,7 @@ utils::globalVariables(c('.', 'site', 'person_id', 'patid', 'visit_occurrence_id
                        'encounterid', 'visit_type', 'age_grp', 'var_val', 'zscore_tot',
                        'zscore_fact', 'outlier', 'var_ever', 'abs_z', 'total_strat_ct',
                        'fu', 'k_mult', 'fact_ct_strat', 'x', 'y', 'lcl', 'ucl', 'cl',
-                       'facet_col', output_cols))
+                       'facet_col', output_cols,
+                       'mean_w0', 'mean_no0', 'median_w0', 'median_no0',
+                       'mean_med_diff_w0', 'mean_med_diff_no0',
+                       'sd_w0', 'sd_no0', 'low_lv', 'top_lv', 'visit_domain'))

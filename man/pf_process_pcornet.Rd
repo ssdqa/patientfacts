@@ -8,6 +8,7 @@ pf_process_pcornet(
   cohort = cohort,
   study_name = "my_study",
   patient_level_tbl = FALSE,
+  compute_skew = FALSE,
   visit_types = c("outpatient", "inpatient"),
   multi_or_single_site = "single",
   time = FALSE,
@@ -35,6 +36,8 @@ pf_process_pcornet(
 \item{patient_level_tbl}{logical indicating whether an additional table with patient level results should be output;
 if TRUE, the output of this function will be a list containing both the summary and patient level
 output. Otherwise, this function will just output the summary dataframe}
+
+\item{compute_skew}{a boolean indicating whether or not skew metrics (skewness & Pearson's skew) should be computed and added to the results}
 
 \item{visit_types}{A list of visit types by which the output should be stratified. Options for visit types can be found or adjusted
 in the provided \code{pf_visit_file_(omop/pcornet)} file. If you would not like to stratify your results by visit type, please
