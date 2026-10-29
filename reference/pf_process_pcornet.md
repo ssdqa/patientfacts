@@ -14,6 +14,7 @@ pf_process_pcornet(
   cohort = cohort,
   study_name = "my_study",
   patient_level_tbl = FALSE,
+  compute_skew = FALSE,
   visit_types = c("outpatient", "inpatient"),
   multi_or_single_site = "single",
   time = FALSE,
@@ -53,6 +54,11 @@ pf_process_pcornet(
   results should be output; if TRUE, the output of this function will be
   a list containing both the summary and patient level output.
   Otherwise, this function will just output the summary dataframe
+
+- compute_skew:
+
+  a boolean indicating whether or not skew metrics (skewness & Pearson's
+  skew) should be computed and added to the results
 
 - visit_types:
 

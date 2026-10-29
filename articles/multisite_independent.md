@@ -27,6 +27,7 @@ analysis, configured appropriately for your study, against each data
 source.
 
 ``` r
+
 library(patientfacts)
 
 my_table <- pf_process(cohort = my_cohort,
@@ -78,6 +79,7 @@ Outputting patient level results is not required, but this option is
 still available for the longitudinal analysis if needed.
 
 ``` r
+
 my_table <- pf_process(cohort = my_cohort,
                        multi_or_single_site = 'single',
                        anomaly_or_exploratory = 'exploratory',
@@ -105,6 +107,7 @@ been created, execute the code below (using functions from the
 `p_value` can be selected by the user.
 
 ``` r
+
 my_summary_table <- my_combo_results %>% 
   group_by(site, visit_type, domain) %>%
   summarise(tot_pt = n_distinct(person_id), 
@@ -133,6 +136,7 @@ should be executed against your results. Copy the code below, inputting
 the data you generated.
 
 ``` r
+
 df_final <- ms_anom_euclidean(fot_input_tbl = my_table %>% 
                                 mutate(prop_pts_fact = pts_w_fact / pts_w_visit),
                               grp_vars = c('site', 'visit_type', 'domain'),
