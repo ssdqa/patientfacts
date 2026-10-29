@@ -550,7 +550,12 @@ pf_ss_exp_cs <- function(data_tbl,
       tab_header(title = tit)
   }
 
-  return(plt)
+  if(any(grepl('skew',colnames(data_tbl)))){
+    opt <- list(plt, skew_tbl)
+    return(opt)
+  }else{
+    return(plt)
+  }
 
 }
 
@@ -903,5 +908,11 @@ pf_ms_exp_cs <- function(data_tbl,
   r[["metadata"]] <- tibble('pkg_backend' = 'ggiraph',
                             'tooltip' = TRUE)
 
-  return(r)
+  if(any(grepl('skew',colnames(data_tbl))) & !large_n){
+    opt <- list(r, skew_tbl)
+    return(opt)
+  }else{
+    return(r)
+  }
+
 }
