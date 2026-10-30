@@ -5,7 +5,7 @@ Compute skewness & Pearson's skew
 ## Usage
 
 ``` r
-compute_skew_metrics(patient_facts_output, val_col = "var_val")
+compute_skew_metrics(patient_facts_output, site_col, val_col = "var_val")
 ```
 
 ## Arguments
@@ -13,6 +13,10 @@ compute_skew_metrics(patient_facts_output, val_col = "var_val")
 - patient_facts_output:
 
   the patient-level output produced by pf_process
+
+- site_col:
+
+  the column in the data that holds site names
 
 - val_col:
 
