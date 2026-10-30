@@ -84,7 +84,12 @@ compute_pf_pcnt <- function(cohort,
                   values_from=fact_ct_strat) %>%
       right_join(cohort) %>%
       relocate(patid) %>%
-      compute_new()
+      collect()
+
+    if(!any(colnames(pf) %in% domain_name)){
+      pf <- pf %>%
+        mutate(!!sym(domain_name) := NA_integer_)
+    }
 
     domain_results[[domain_name]] <- pf
   }

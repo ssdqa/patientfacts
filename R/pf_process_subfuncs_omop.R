@@ -63,7 +63,12 @@ compute_pf_omop <- function(cohort,
                   values_from=fact_ct_strat) %>%
       right_join(cohort) %>%
       relocate(person_id) %>%
-      compute_new()
+      collect()
+
+    if(!any(colnames(pf) %in% domain_name)){
+      pf <- pf %>%
+        mutate(!!sym(domain_name) := NA_integer_)
+    }
 
     domain_results[[domain_name]] <- pf
   }
