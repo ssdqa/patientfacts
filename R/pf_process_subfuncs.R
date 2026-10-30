@@ -38,7 +38,8 @@ combine_study_facts <- function(pf_tbl,
       paste0(visit_type_list[[i]])
 
     pf_tbl_visittype <-
-      pf_tbl[[visit_type_pulled]]
+      pf_tbl[[visit_type_pulled]] %>%
+      collect()
 
     tbl_cols <- pf_tbl_visittype %>% colnames()
 
