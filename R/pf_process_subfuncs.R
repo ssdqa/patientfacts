@@ -381,12 +381,12 @@ compute_skew_metrics <- function(patient_facts_output,
     select(-c(mean_no0, median_no0, sd_no0, mean_med_diff_no0))
 
   skew_tbl <- w_zeros %>%
-    left_join(wo_zeros) %>% mutate(cohort = 'full')
+    left_join(wo_zeros)
 
   skew_tbl_trim <- w_zeros_trim %>%
-    left_join(wo_zeros_trim) %>% mutate(cohort = 'trimmed extremes')
+    left_join(wo_zeros_trim)
 
-  return(skew_tbl %>% union(skew_tbl_trim))
+  return(skew_tbl %>% left_join(skew_tbl_trim))
 }
 
 
