@@ -373,7 +373,7 @@ compute_skew_metrics <- function(patient_facts_output,
       mean_no0 = mean(!!sym(val_col)),
       median_no0 = median(!!sym(val_col)),
       sd_no0 = sd(!!sym(val_col)),
-      skewness_no0_trim = compute_skew(!!sym(val_col))$skewness,
+      skewness_no0_trim = compute_skew(!!sym(val_col)),
       mean_med_diff_no0 = mean_no0 - median_no0,
       pearsons_no0_trim = (3 * mean_med_diff_no0) / sd_no0,
       .groups = "drop"
