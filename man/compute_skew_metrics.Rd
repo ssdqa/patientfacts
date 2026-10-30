@@ -4,10 +4,12 @@
 \alias{compute_skew_metrics}
 \title{Compute skewness & Pearson's skew}
 \usage{
-compute_skew_metrics(patient_facts_output, val_col = "var_val")
+compute_skew_metrics(patient_facts_output, site_col, val_col = "var_val")
 }
 \arguments{
 \item{patient_facts_output}{the patient-level output produced by pf_process}
+
+\item{site_col}{the column in the data that holds site names}
 
 \item{val_col}{the column with the value that should be used as the metric for computing skew}
 }

@@ -283,6 +283,7 @@ compute_dist_mean_pf <- function(data_input,
 #' Compute skewness & Pearson's skew
 #'
 #' @param patient_facts_output the patient-level output produced by pf_process
+#' @param site_col the column in the data that holds site names
 #' @param val_col the column with the value that should be used as the metric for computing skew
 #'
 #' @returns a summary table with the site, visit type, & domain and their associated
@@ -292,6 +293,7 @@ compute_dist_mean_pf <- function(data_input,
 #' @keywords internal
 #'
 compute_skew_metrics <- function(patient_facts_output,
+                                 site_col,
                                  val_col = 'var_val') {
 
   compute_skew <- function(x) {
@@ -307,13 +309,13 @@ compute_skew_metrics <- function(patient_facts_output,
 
   ### With 0s
   thrs_w0 <- patient_facts_output %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(top_lv = stats::quantile(!!sym(val_col), 0.975),
               low_lv = stats::quantile(!!sym(val_col), 0.025))
 
   #### ALL
   w_zeros <- patient_facts_output %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(
       mean_w0 = mean(!!sym(val_col)),
       median_w0 = median(!!sym(val_col)),
@@ -329,7 +331,7 @@ compute_skew_metrics <- function(patient_facts_output,
   w_zeros_trim <- patient_facts_output %>%
     left_join(thrs_w0) %>%
     filter(!!sym(val_col) >= low_lv & !!sym(val_col) <= top_lv) %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(
       mean_w0 = mean(!!sym(val_col)),
       median_w0 = median(!!sym(val_col)),
@@ -344,14 +346,14 @@ compute_skew_metrics <- function(patient_facts_output,
   ### Without 0s
   thrs_no0 <- patient_facts_output %>%
     filter(var_ever == 1) %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(top_lv = stats::quantile(!!sym(val_col), 0.975),
               low_lv = stats::quantile(!!sym(val_col), 0.025))
 
   #### ALL
   wo_zeros <- patient_facts_output %>%
     filter(var_ever == 1) %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(
       mean_no0 = mean(!!sym(val_col)),
       median_no0 = median(!!sym(val_col)),
@@ -368,7 +370,7 @@ compute_skew_metrics <- function(patient_facts_output,
     filter(var_ever == 1) %>%
     left_join(thrs_no0) %>%
     filter(!!sym(val_col) >= low_lv & !!sym(val_col) <= top_lv) %>%
-    group_by(site, visit_type, domain) %>%
+    group_by(!!sym(site_col), visit_type, domain) %>%
     summarise(
       mean_no0 = mean(!!sym(val_col)),
       median_no0 = median(!!sym(val_col)),
