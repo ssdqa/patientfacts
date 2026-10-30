@@ -239,8 +239,7 @@ pf_process_pcornet <- function(cohort = cohort,
     if(time || anomaly_or_exploratory == 'anomaly'){
       cli::cli_warn('Skew computations are only available for exploratory, cross-sectional analyses')
     }else{
-      skew_tbl <- compute_skew_metrics(patient_facts_output = pf_int %>%
-                                         replace_site_col(),
+      skew_tbl <- compute_skew_metrics(patient_facts_output = pf_int,
                                        val_col = 'var_val')
 
       pf_final <- pf_final %>%
